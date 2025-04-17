@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div>
       <button onClick={() => router.push("/planner/calendar")}>
-        Home principal
+        Home principal updated by Gabriel
       </button>
     </div>
   );
