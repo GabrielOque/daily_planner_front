@@ -1,11 +1,15 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 
-const AuthWrapper = ({ children }) => {
+const AuthWrapper = ({ children, loading = false }) => {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <div className="bg-white w-full h-full  flex-col items-center justify-center">
+    <div
+      className={`bg-white w-full h-full  flex-col items-center justify-center ${
+        loading && "opacity-60 animate-pulse  pointer-events-none"
+      }`}
+    >
       <div className="flex w-full h-full p-8 gap-x-4 items-center">
         <div className="w-1/2 h-full bg-neutral rounded-2xl">
           <h1 className="text-neutralLighter font-bold text-4xl pl-8 pt-12">
