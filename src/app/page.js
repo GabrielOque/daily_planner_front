@@ -14,7 +14,6 @@ import AuthWrapper from "@/components/AuthWrapper";
 import { NEXT_PUBLIC_API_URL } from "@/app/utils/envConfig";
 
 export default function Home() {
-  // console.log("force deploye");
   const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
