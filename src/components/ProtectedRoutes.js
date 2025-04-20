@@ -25,7 +25,6 @@ const ProtectedRoutes = ({ children }) => {
         dispatch(setUserAuth(response.data));
       }
     } catch (error) {
-      setLoading(false);
       removeToken();
       dispatch(logoutUser());
       router.push("/login");

@@ -43,6 +43,7 @@ const Login = () => {
   return (
     <AuthWrapper>
       <h1 className="text-neutral font-bold text-4xl">Iniciar sesión</h1>
+      <button onClick={() => router.push("/planner")}>Fast go</button>
       <div className="w-full px-12 2xl:px-40 pt-6 space-y-3">
         <CustomInput
           placeholder="oquendogabriel18@gmail.com"
