@@ -10,8 +10,8 @@ const AuthWrapper = ({ children, loading = false }) => {
         loading && "opacity-60 animate-pulse  pointer-events-none"
       }`}
     >
-      <div className="flex w-full h-full p-8 gap-x-4 items-center">
-        <div className="w-1/2 h-full bg-neutral rounded-2xl">
+      <div className="flex w-full h-full p-2 lg:p-4 2xl:p-8 gap-x-4 items-center">
+        <div className="w-1/2 md:block hidden h-full bg-neutral rounded-2xl">
           <h1 className="text-neutralLighter font-bold text-4xl pl-8 pt-12">
             Daily Planner
           </h1>
@@ -23,14 +23,21 @@ const AuthWrapper = ({ children, loading = false }) => {
             />
           </div>
         </div>
-        <div className="w-1/2 h-full border-2 border-neutralLighter rounded-2xl flex flex-col items-center justify-center relative">
+        <div className="md:w-1/2 w-full h-full border-2 border-neutralLighter rounded-2xl flex flex-col items-center justify-center relative">
           <>
             {pathname !== "/" && (
               <i
-                className="fas fa-arrow-left absolute top-3 left-3 cursor-pointer text-2xl text-textSecondary"
+                className="fas fa-arrow-left absolute top-3 left-3 cursor-pointer text-xl md:text-2xl text-textSecondary"
                 onClick={() => router.push("/")}
               />
             )}
+            <div className="md:hidden flex">
+              <img
+                src="/checklist.svg"
+                alt="Calendar"
+                className="h-[200px] pb-4"
+              />
+            </div>
             {children}
           </>
         </div>
