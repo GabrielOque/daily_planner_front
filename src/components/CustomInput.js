@@ -18,18 +18,18 @@ const CustomInput = ({
         onChange={onChange}
         disabled={loading}
         placeholder={placeholder}
-        className={`w-full border-2 border-neutralLighter rounded-xl px-3 text-lg focus:outline-none focus:ring-0 ${height}`}
+        className={`w-full border-2 border-neutralLighter rounded-xl px-3 text-md md:text-lg focus:outline-none focus:ring-0 ${height}`}
       />
       {password && (
         <>
           {showPassword ? (
             <i
-              className="far fa-eye text-textSecondary absolute text-2xl top-3 right-3 cursor-pointer"
+              className="far fa-eye text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
               onClick={() => setShowPassword(false)}
             />
           ) : (
             <i
-              className="far fa-eye-slash text-textSecondary absolute text-2xl top-3 right-3 cursor-pointer"
+              className="far fa-eye-slash text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
               onClick={() => setShowPassword(true)}
             />
           )}
