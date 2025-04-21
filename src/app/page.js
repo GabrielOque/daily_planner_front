@@ -1,17 +1,17 @@
 "use client";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { getToken } from "@/app/utils/auth";
-import axios from "@/app/utils/axiosInstance";
-import { removeToken, setToken } from "@/app/utils/auth";
-import { logoutUser, setUserAuth } from "@/app/store/features/user/userSlice";
+import { getToken } from "@/utils/auth";
+import axios from "@/utils/axiosInstance";
+import { removeToken, setToken } from "@/utils/auth";
+import { logoutUser, setUserAuth } from "@/store/features/user/userSlice";
 
 //Components
 import Button from "@/components/Button";
 import { useEffect, useState } from "react";
 import AuthWrapper from "@/components/AuthWrapper";
 
-import { NEXT_PUBLIC_API_URL } from "@/app/utils/envConfig";
+import { NEXT_PUBLIC_API_URL } from "@/utils/envConfig";
 
 export default function Home() {
   // console.log("force deploye");
@@ -48,8 +48,10 @@ export default function Home() {
 
   return (
     <AuthWrapper loading={loading}>
-      <h1 className="text-neutral font-bold text-4xl">Mente productiva</h1>
-      <p className="text-textSecondary font-semibold pt-6 text-xl px-12 2xl:px-36">
+      <h1 className="text-neutral font-bold text-2xl md:text-4xl text-center w-full">
+        Mente productiva
+      </h1>
+      <p className="text-textSecondary font-semibold pt-6 text-md md:text-xl px-4 md:px-12 2xl:px-36">
         Con solo estas funciones, Daily Planner está personalizado para personas
         que buscan una manera libre de estrés de mantenerse enfocadas en sus
         objetivos, proyectos y tareas.
@@ -58,15 +60,15 @@ export default function Home() {
         <Button
           paddingY="py-2"
           background="bg-primary"
-          fontSize="text-xl"
+          fontSize="text-md md:text-xl"
           textColor="text-neutral"
           onClick={() => router.push("/create-account")}
         >
           Empezar en Daily Planner
         </Button>
       </div>
-      <div className="px-12 2xl:px-24 mt-6">
-        <p className="text-textSecondary font-semibold text-xl">
+      <div className="px-12 2xl:px-24 mt-6 w-full">
+        <div className="text-textSecondary font-semibold text-md md:text-xl text-center">
           ¿Ya tienes una cuenta?{" "}
           <button
             className="text-primary font-bold cursor-pointer underline"
@@ -74,7 +76,7 @@ export default function Home() {
           >
             Inicia sesión
           </button>
-        </p>
+        </div>
       </div>
     </AuthWrapper>
   );

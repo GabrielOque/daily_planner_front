@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import { clearError } from "@/app/store/features/user/userSlice";
-import { loginUser } from "@/app/store/features/user/userThunks";
+import { clearError } from "@/store/features/user/userSlice";
+import { loginUser } from "@/store/features/user/userThunks";
 
 import Button from "@/components/Button";
 import CustomInput from "@/components/CustomInput";
@@ -42,9 +42,11 @@ const Login = () => {
 
   return (
     <AuthWrapper>
-      <h1 className="text-neutral font-bold text-4xl">Iniciar sesión</h1>
+      <h1 className="text-neutral font-bold text-2xl md:text-4xl">
+        Iniciar sesión
+      </h1>
       {/* <button onClick={() => router.push("/planner")}>Fast go</button> */}
-      <div className="w-full px-12 2xl:px-40 pt-6 space-y-3">
+      <div className="w-full px-4 md:px-12 2xl:px-40 pt-6 space-y-3">
         <CustomInput
           placeholder="oquendogabriel18@gmail.com"
           value={email}
@@ -57,20 +59,20 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <div className="flex justify-center w-full mt-6 px-12 2xl:px-40">
+      <div className="flex justify-center w-full mt-6 px-4 md:px-12 2xl:px-40">
         <Button
           loading={isLoading}
           paddingY="py-2"
           background="bg-primary"
-          fontSize="text-xl"
+          fontSize="text-md md:text-xl"
           textColor="text-neutral"
           onClick={handleCreateAccount}
         >
           Iniciar sesión
         </Button>
       </div>
-      <div className="px-12 2xl:px-40 mt-6">
-        <p className="text-textSecondary font-semibold text-xl">
+      <div className="px-4 md:px-12 2xl:px-40 mt-6">
+        <div className="text-textSecondary font-semibold text-base text-center md:text-xl">
           ¿No tienes una cuenta?{" "}
           <button
             className="text-primary font-bold cursor-pointer underline"
@@ -78,10 +80,10 @@ const Login = () => {
           >
             Regístrate
           </button>
-        </p>
+        </div>
       </div>
-      <div className="px-12 2xl:px-40 mt-6">
-        <p className="text-textSecondary font-semibold text-xl">
+      <div className="px-4 md:px-12 2xl:px-40 mt-6">
+        <p className="text-textSecondary font-semibold text-md md:text-xl text-center">
           ¿Olvidaste tu contraseña?{" "}
           <button
             className="text-primary font-bold cursor-pointer underline"

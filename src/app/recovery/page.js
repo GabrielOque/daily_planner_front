@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import axios from "@/app/utils/axiosInstance";
+import axios from "@/utils/axiosInstance";
 
 import Button from "@/components/Button";
 import CustomInput from "@/components/CustomInput";
@@ -97,26 +97,26 @@ const RecoveryPassword = () => {
     <AuthWrapper>
       {step === 1 && (
         <>
-          <h1 className="text-neutral font-bold text-4xl">
+          <h1 className="text-neutral font-bold text-2xl text-center md:text-4xl">
             Recuperar contraseña
           </h1>
-          <p className="text-textSecondary font-semibold pt-6 text-xl px-12 2xl:px-36">
+          <p className="text-textSecondary font-semibold pt-6 text-md text-center md:text-xl px-4 md:px-12 2xl:px-36">
             Ingresa tu correo electrónico y te enviaremos un codigo para que
             puedas recuperar tu contraseña.
           </p>
-          <div className="w-full px-12 2xl:px-40 pt-6 space-y-3">
+          <div className="w-full px-4 md:px-12 2xl:px-40 pt-6 space-y-3">
             <CustomInput
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Correo electrónico"
             />
           </div>
-          <div className="flex justify-center w-full mt-6 px-12 2xl:px-40">
+          <div className="flex justify-center w-full mt-6 px-4 md:px-12 2xl:px-40">
             <Button
               loading={loading}
               paddingY="py-2"
               background="bg-primary"
-              fontSize="text-xl"
+              fontSize="text-md md:text-xl"
               textColor="text-neutral"
               onClick={handleSubmit}
             >
@@ -127,32 +127,32 @@ const RecoveryPassword = () => {
       )}
       {step === 2 && (
         <>
-          <h1 className="text-neutral font-bold text-4xl">
+          <h1 className="text-neutral font-bold text-2xl text-center md:text-4xl">
             Recuperar contraseña
           </h1>
-          <p className="text-textSecondary font-semibold pt-6 text-xl px-12 2xl:px-36">
+          <p className="text-textSecondary font-semibold pt-6 text-md text-center md:text-xl px-4 md:px-12 2xl:px-36">
             Ingresa el código de verificación que hemos enviado a tu correo
             electrónico.
           </p>
-          <div className="w-full px-12 2xl:px-40 pt-6 space-y-3">
+          <div className="w-full px-4 md:px-12 2xl:px-40 pt-6 space-y-3">
             <CustomInput
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Código de verificación"
             />
             <label
-              className="text-textSecondary font-semibold text-sm underline cursor-pointer pl-2"
+              className="text-textSecondary font-semibold text-xs md:text-sm underline cursor-pointer pl-2"
               onClick={handleResendCode}
             >
               Volver a enviar el código?
             </label>
           </div>
-          <div className="flex justify-center w-full mt-6 px-12 2xl:px-40">
+          <div className="flex justify-center w-full mt-6 px-4 md:px-12 2xl:px-40">
             <Button
               loading={loading}
               paddingY="py-2"
               background="bg-primary"
-              fontSize="text-xl"
+              fontSize="text-md md:text-xl"
               textColor="text-neutral"
               onClick={handleSubmitCode}
             >
@@ -163,13 +163,13 @@ const RecoveryPassword = () => {
       )}
       {step === 3 && (
         <>
-          <h1 className="text-neutral font-bold text-4xl">
+          <h1 className="text-neutral font-bold px-4 md:px-12 text-center text-2xl md:text-4xl">
             Cambiar contraseña
           </h1>
-          <p className="text-textSecondary font-semibold pt-6 text-xl px-12 2xl:px-36">
+          <p className="text-textSecondary font-semibold pt-6 text-center text-md md:text-xl px-4 md:px-12 2xl:px-36">
             Ingresa tu nueva contraseña.
           </p>
-          <div className="w-full px-12 2xl:px-40 pt-6 space-y-3">
+          <div className="w-full px-4 md:px-12 2xl:px-40 pt-6 space-y-3">
             <CustomInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -183,12 +183,12 @@ const RecoveryPassword = () => {
               type="password"
             />
           </div>
-          <div className="flex justify-center w-full mt-6 px-12 2xl:px-40">
+          <div className="flex justify-center w-full mt-6 px-4 md:px-12 2xl:px-40">
             <Button
               loading={loading}
               paddingY="py-2"
               background="bg-primary"
-              fontSize="text-xl"
+              fontSize="text-md md:text-xl"
               textColor="text-neutral"
               onClick={handleSubmitNewPassword}
             >
