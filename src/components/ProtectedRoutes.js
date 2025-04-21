@@ -1,13 +1,13 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getToken } from "@/app/utils/auth";
-import axios from "@/app/utils/axiosInstance";
+import { getToken } from "@/utils/auth";
+import axios from "@/utils/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
-import { removeToken, setToken } from "@/app/utils/auth";
-import { logoutUser, setUserAuth } from "@/app/store/features/user/userSlice";
+import { removeToken, setToken } from "@/utils/auth";
+import { logoutUser, setUserAuth } from "@/store/features/user/userSlice";
 
-import { NEXT_PUBLIC_API_URL } from "@/app/utils/envConfig";
+import { NEXT_PUBLIC_API_URL } from "@/utils/envConfig";
 
 const ProtectedRoutes = ({ children }) => {
   const router = useRouter();
