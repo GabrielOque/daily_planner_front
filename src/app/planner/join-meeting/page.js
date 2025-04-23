@@ -112,13 +112,13 @@ export default function JoinMeeting() {
 
 function MyVideoConference() {
   // const room = useContext(RoomContext); // Obtener la instancia del Room desde el contexto
-  const tracks = useTracks(
-    [
-      { source: Track?.Source?.Camera, withPlaceholder: true },
-      { source: Track?.Source?.ScreenShare, withPlaceholder: false },
-    ],
-    { onlySubscribed: false }
-  );
+  // const tracks = useTracks(
+  //   [
+  //     { source: Track?.Source?.Camera, withPlaceholder: true },
+  //     { source: Track?.Source?.ScreenShare, withPlaceholder: false },
+  //   ],
+  //   { onlySubscribed: false }
+  // );
 
   // useEffect(() => {
   //   if (room) {
@@ -134,11 +134,14 @@ function MyVideoConference() {
   // }, [room]);
 
   return (
-    <GridLayout tracks={tracks}>
-      {/* <ParticipantTile />*/}
-      <VideoConference
-        chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
-      />
-    </GridLayout>
+    // <GridLayout tracks={tracks}>
+    //   {/* <ParticipantTile />*/}
+    //   <VideoConference
+    //     chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
+    //   />
+    // </GridLayout>
+    <VideoConference
+      chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
+    />
   );
 }
