@@ -34,3 +34,10 @@
     width: 0;
   }
 }
+
+/* globals.css livekit */
+[data-lk-theme="default"] .lk-chat {
+  border-radius: 1rem; /* 16px (rounded-2xl en Tailwind) */
+  height: 88vh;
+  overflow: hidden;
+}

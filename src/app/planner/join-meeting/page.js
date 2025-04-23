@@ -105,8 +105,10 @@ export default function JoinMeeting() {
 
 function MyVideoConference() {
   return (
-    <VideoConference
-      chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
-    />
+    <div className="h-[88vh] overflow-hidden rounded-2xl bg-neutral">
+      <VideoConference
+        chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
+      />
+    </div>
   );
 }
