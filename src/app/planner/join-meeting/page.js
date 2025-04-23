@@ -111,7 +111,7 @@ export default function JoinMeeting() {
 }
 
 function MyVideoConference() {
-  const room = useContext(RoomContext); // Obtener la instancia del Room desde el contexto
+  // const room = useContext(RoomContext); // Obtener la instancia del Room desde el contexto
   const tracks = useTracks(
     [
       { source: Track?.Source?.Camera, withPlaceholder: true },
@@ -120,18 +120,18 @@ function MyVideoConference() {
     { onlySubscribed: false }
   );
 
-  useEffect(() => {
-    if (room) {
-      // Suscribirse a los participantes ya presentes en la sala
-      room?.participants?.forEach((participant) => {
-        participant?.tracks?.forEach((track) => {
-          if (track?.kind === "video" || track?.kind === "audio") {
-            track?.subscribe(); // Asegurarse de estar suscrito a los tracks
-          }
-        });
-      });
-    }
-  }, [room]);
+  // useEffect(() => {
+  //   if (room) {
+  //     // Suscribirse a los participantes ya presentes en la sala
+  //     room?.participants?.forEach((participant) => {
+  //       participant?.tracks?.forEach((track) => {
+  //         if (track?.kind === "video" || track?.kind === "audio") {
+  //           track?.subscribe(); // Asegurarse de estar suscrito a los tracks
+  //         }
+  //       });
+  //     });
+  //   }
+  // }, [room]);
 
   return (
     <GridLayout tracks={tracks}>
