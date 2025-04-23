@@ -8,7 +8,7 @@ import {
   RoomContext,
 } from "@livekit/components-react";
 import { Room, Track } from "livekit-client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   NEXT_PUBLIC_LIVEKIT_URL,
@@ -49,9 +49,30 @@ export default function JoinMeeting() {
 
         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
 
-        room.on("disconnected", () => {
+        // Habilitar la cámara y micrófono del usuario local
+        const localParticipant = room?.localParticipant;
+        if (!localParticipant?.isCameraEnabled)
+          localParticipant?.setCameraEnabled(true);
+        if (!localParticipant?.isMicrophoneEnabled)
+          localParticipant?.setMicrophoneEnabled(true);
+
+        // Suscribirse a los participantes que se conecten
+        const handleParticipantConnected = (participant) => {
+          console.log("Participant", participant);
+          participant?.tracks?.forEach((track) => {
+            if (track?.kind === "video" || track?.kind === "audio") {
+              track?.subscribe(); // Suscribirse a los tracks de video y audio de otros participantes
+            }
+          });
+        };
+
+        const handleParticipantDisconnected = (participant) => {
           router.push("/planner/calendar");
-        });
+          console.log(`${participant?.identity || ""} se desconectó`);
+        };
+
+        room.on("participantConnected", handleParticipantConnected);
+        room.on("disconnected", handleParticipantDisconnected);
 
         currentRoom = room;
         setRoomInstance(room);
@@ -68,7 +89,7 @@ export default function JoinMeeting() {
       mounted = false;
       currentRoom?.disconnect();
     };
-  }, [roomName, userName]);
+  }, [roomName, userName, router]);
 
   if (loading) return <div>Conectando...</div>;
   if (!roomInstance) return <div>Esperando la conexión...</div>;
@@ -88,13 +109,27 @@ export default function JoinMeeting() {
 }
 
 function MyVideoConference() {
+  const room = useContext(RoomContext); // Obtener la instancia del Room desde el contexto
   const tracks = useTracks(
     [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
+      { source: Track?.Source?.Camera, withPlaceholder: true },
+      { source: Track?.Source?.ScreenShare, withPlaceholder: false },
     ],
     { onlySubscribed: false }
   );
+
+  useEffect(() => {
+    if (room) {
+      // Suscribirse a los participantes ya presentes en la sala
+      room?.participants?.forEach((participant) => {
+        participant?.tracks?.forEach((track) => {
+          if (track?.kind === "video" || track?.kind === "audio") {
+            track?.subscribe(); // Asegurarse de estar suscrito a los tracks
+          }
+        });
+      });
+    }
+  }, [room]);
 
   return (
     <GridLayout tracks={tracks} style={{ height: "80vh" }}>
