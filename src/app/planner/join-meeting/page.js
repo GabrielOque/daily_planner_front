@@ -2,11 +2,7 @@
 import {
   formatChatMessageLinks,
   VideoConference,
-  ControlBar,
-  GridLayout,
-  ParticipantTile,
   RoomAudioRenderer,
-  useTracks,
   RoomContext,
 } from "@livekit/components-react";
 import { Room, Track } from "livekit-client";
@@ -51,19 +47,17 @@ export default function JoinMeeting() {
 
         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
 
-        // Habilitar la cámara y micrófono del usuario local
         const localParticipant = room?.localParticipant;
         if (!localParticipant?.isCameraEnabled)
           localParticipant?.setCameraEnabled(true);
         if (!localParticipant?.isMicrophoneEnabled)
           localParticipant?.setMicrophoneEnabled(true);
 
-        // Suscribirse a los participantes que se conecten
         const handleParticipantConnected = (participant) => {
           console.log("Participant", participant);
           participant?.tracks?.forEach((track) => {
             if (track?.kind === "video" || track?.kind === "audio") {
-              track?.subscribe(); // Suscribirse a los tracks de video y audio de otros participantes
+              track?.subscribe();
             }
           });
         };
@@ -104,42 +98,13 @@ export default function JoinMeeting() {
       >
         <MyVideoConference chatMessageFormatter={formatChatMessageLinks} />
         <RoomAudioRenderer />
-        {/* <ControlBar /> */}
       </div>
     </RoomContext.Provider>
   );
 }
 
 function MyVideoConference() {
-  // const room = useContext(RoomContext); // Obtener la instancia del Room desde el contexto
-  // const tracks = useTracks(
-  //   [
-  //     { source: Track?.Source?.Camera, withPlaceholder: true },
-  //     { source: Track?.Source?.ScreenShare, withPlaceholder: false },
-  //   ],
-  //   { onlySubscribed: false }
-  // );
-
-  // useEffect(() => {
-  //   if (room) {
-  //     // Suscribirse a los participantes ya presentes en la sala
-  //     room?.participants?.forEach((participant) => {
-  //       participant?.tracks?.forEach((track) => {
-  //         if (track?.kind === "video" || track?.kind === "audio") {
-  //           track?.subscribe(); // Asegurarse de estar suscrito a los tracks
-  //         }
-  //       });
-  //     });
-  //   }
-  // }, [room]);
-
   return (
-    // <GridLayout tracks={tracks}>
-    //   {/* <ParticipantTile />*/}
-    //   <VideoConference
-    //     chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
-    //   />
-    // </GridLayout>
     <VideoConference
       chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
     />
