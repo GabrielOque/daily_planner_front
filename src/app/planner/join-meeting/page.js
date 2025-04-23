@@ -1,5 +1,7 @@
 "use client";
 import {
+  formatChatMessageLinks,
+  VideoConference,
   ControlBar,
   GridLayout,
   ParticipantTile,
@@ -100,9 +102,9 @@ export default function JoinMeeting() {
         data-lk-theme="default"
         style={{ height: "88vh", overflowX: "hidden", overflowY: "hidden" }}
       >
-        <MyVideoConference />
+        <MyVideoConference chatMessageFormatter={formatChatMessageLinks} />
         <RoomAudioRenderer />
-        <ControlBar />
+        {/* <ControlBar /> */}
       </div>
     </RoomContext.Provider>
   );
@@ -132,8 +134,11 @@ function MyVideoConference() {
   }, [room]);
 
   return (
-    <GridLayout tracks={tracks} style={{ height: "80vh" }}>
-      <ParticipantTile />
+    <GridLayout tracks={tracks}>
+      {/* <ParticipantTile />*/}
+      <VideoConference
+        chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
+      />
     </GridLayout>
   );
 }
