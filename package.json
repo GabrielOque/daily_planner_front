@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
+    "@fullcalendar/timegrid": "^6.1.17",
     "@livekit/components-react": "^2.9.2",
     "@livekit/components-styles": "^1.1.5",
     "@reduxjs/toolkit": "^2.7.0",
     "axios": "^1.8.4",
     "next": "14.2.24",
     "react": "^18",
+    "react-datepicker": "^8.3.0",
     "react-dom": "^18",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5"

@@ -2,6 +2,7 @@ const Button = ({
   paddingX,
   paddingY,
   background,
+  border = "border-0",
   fontSize,
   onClick,
   loading = false,
@@ -9,7 +10,7 @@ const Button = ({
 }) => {
   return (
     <button
-      className={`rounded-lg font-semibold w-full ${paddingX} ${paddingY} ${background} ${fontSize} ${
+      className={`rounded-lg font-semibold w-full ${border} ${paddingX} ${paddingY} ${background} ${fontSize} ${
         loading ? "cursor-not-allowed opacity-40" : "cursor-pointer"
       }`}
       onClick={onClick}

@@ -1,0 +1,76 @@
+/* calendar.css */
+.fc {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.75rem;
+  color: #444444; /* textSecondary */
+}
+
+/* Título */
+.fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111111; /* textContrast */
+}
+
+/* Botones del calendario */
+.fc-button {
+  background-color: #fdc938; /* primary */
+  border: none;
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  min-height: 1.5rem;
+  color: #111111; /* textContrast */
+}
+
+.fc-button-primary:hover {
+  background-color: #d9a600; /* primaryDark */
+}
+
+/* Fondo general del calendario */
+.fc-timegrid-col,
+.fc-timegrid-slot,
+.fc-daygrid-day {
+  background-color: #f6f6f6; /* neutralLight */
+}
+
+/* Líneas y ejes */
+.fc-timegrid-axis {
+  border-right: 1px solid #eaeaea; /* border */
+  background-color: #f4f4f4; /* neutralLighter */
+}
+
+/* Labels de las horas */
+.fc-timegrid-slot-label {
+  background-color: #f4f4f4; /* neutralLighter */
+  color: #444444; /* textSecondary */
+  font-weight: 500;
+  font-size: 0.7rem;
+}
+
+/* Eventos */
+.fc-event {
+  background-color: #91d8e4; /* accentBlue */
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #111111; /* textContrast */
+  padding: 2px 4px;
+}
+
+/* Hover en eventos */
+.fc-event:hover {
+  opacity: 0.9;
+}
+
+/* Día actual */
+.fc-day-today {
+  background-color: #ffd166 !important; /* accentYellow */
+}
+
+.react-datepicker {
+  font-size: 0.75rem;
+  transform: scale(0.9);
+  transform-origin: top left;
+}

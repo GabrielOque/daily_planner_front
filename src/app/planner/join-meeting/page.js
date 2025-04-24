@@ -1,12 +1,13 @@
 "use client";
+import Button from "@/components/Button";
 import {
   formatChatMessageLinks,
   VideoConference,
   RoomAudioRenderer,
   RoomContext,
 } from "@livekit/components-react";
-import { Room, Track } from "livekit-client";
-import { useEffect, useState, useContext } from "react";
+import { Room } from "livekit-client";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import {
   NEXT_PUBLIC_LIVEKIT_URL,
@@ -16,6 +17,127 @@ import { useRouter } from "next/navigation";
 import "@livekit/components-styles";
 
 export default function JoinMeeting() {
+  const router = useRouter();
+  const [confirmed, setConfirmed] = useState(false);
+  const [isMicrophoneEnabled, setIsMicrophoneEnabled] = useState(false);
+  const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    let stream;
+
+    const enableCamera = async () => {
+      if (isCameraEnabled && videoRef.current) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          videoRef.current.srcObject = stream;
+        } catch (err) {
+          console.error("No se pudo acceder a la cámara", err);
+        }
+      } else if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+
+    enableCamera();
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [isCameraEnabled]);
+
+  return (
+    <>
+      {!confirmed ? (
+        <div className="flex flex-col items-center justify-center h-full px-2 bg-gray-100">
+          <h1 className="text-2xl md:text-4xl font-bold mb-4">
+            Unirse a la reunión
+          </h1>
+          <div className="justify-center w-full mt-4 flex items-center">
+            {isCameraEnabled ? (
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="h-[200px] 2xl:h-[400px] rounded-lg object-cover"
+              />
+            ) : (
+              <img
+                src="/camera.svg"
+                alt="camera"
+                className="h-[200px] 2xl:h-[400px]"
+              />
+            )}
+          </div>
+          <div className="pt-4 flex gap-x-4 w-40 justify-between">
+            <span
+              className="w-8 text-center transition-transform duration-200 cursor-pointer"
+              onClick={() => setIsMicrophoneEnabled(!isMicrophoneEnabled)}
+            >
+              <i
+                className={`fas ${
+                  isMicrophoneEnabled ? "fa-microphone" : "fa-microphone-slash"
+                } text-2xl`}
+              />
+            </span>
+
+            <span
+              className="w-8 text-center transition-transform duration-200 cursor-pointer"
+              onClick={() => setIsCameraEnabled(!isCameraEnabled)}
+            >
+              <i
+                className={`fas ${
+                  isCameraEnabled ? "fa-video" : "fa-video-slash"
+                } text-2xl`}
+              />
+            </span>
+          </div>
+
+          <div className="flex justify-center gap-x-4 w-80 pt-4">
+            <Button
+              paddingY="py-1"
+              paddingX="px-2"
+              background="bg-white"
+              border="border-2 border-gray-300"
+              fontSize="text-sm md:text-md"
+              textColor="text-neutral"
+              onClick={() => {
+                setIsCameraEnabled(false);
+                router.push("/planner/calendar");
+              }}
+            >
+              Cancelar
+            </Button>
+
+            <Button
+              paddingY="py-1"
+              paddingX="px-2"
+              background="bg-primary"
+              fontSize="text-sm md:text-md"
+              textColor="text-neutral"
+              onClick={() => {
+                setConfirmed(true);
+              }}
+            >
+              Unirse a la reunión
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <JoinConfirmed
+          isMicrophoneEnabled={isMicrophoneEnabled}
+          isCameraEnabled={isCameraEnabled}
+        />
+      )}
+    </>
+  );
+}
+
+const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const router = useRouter();
   const roomName = new URLSearchParams(window.location.search).get("roomName");
   const userName = new URLSearchParams(window.location.search).get("userName");
@@ -47,11 +169,18 @@ export default function JoinMeeting() {
 
         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
 
-        const localParticipant = room?.localParticipant;
-        if (!localParticipant?.isCameraEnabled)
-          localParticipant?.setCameraEnabled(true);
-        if (!localParticipant?.isMicrophoneEnabled)
-          localParticipant?.setMicrophoneEnabled(true);
+        // const localParticipant = room?.localParticipant;
+        // if (!localParticipant?.isCameraEnabled)
+        //   localParticipant?.setCameraEnabled(true);
+        // if (!localParticipant?.isMicrophoneEnabled)
+        //   localParticipant?.setMicrophoneEnabled(true);
+
+        if (isCameraEnabled) {
+          room.localParticipant.setCameraEnabled(true);
+        }
+        if (isMicrophoneEnabled) {
+          room.localParticipant.setMicrophoneEnabled(true);
+        }
 
         const handleParticipantConnected = (participant) => {
           console.log("Participant", participant);
@@ -87,8 +216,9 @@ export default function JoinMeeting() {
     };
   }, [roomName, userName, router]);
 
-  if (loading) return <div>Conectando...</div>;
-  if (!roomInstance) return <div>Esperando la conexión...</div>;
+  if (loading) return <Connecting title={"Conectando a la reunión..."} />;
+  if (!roomInstance)
+    return <Connecting title={"Esperando a los participantes..."} />;
 
   return (
     <RoomContext.Provider value={roomInstance}>
@@ -101,7 +231,7 @@ export default function JoinMeeting() {
       </div>
     </RoomContext.Provider>
   );
-}
+};
 
 function MyVideoConference() {
   return (
@@ -112,3 +242,13 @@ function MyVideoConference() {
     </div>
   );
 }
+
+const Connecting = ({ title }) => {
+  return (
+    <div className="flex items-center justify-center h-full animate-pulse">
+      <div className="flex items-center justify-center w-10 h-10 border-4 border-gray-300 rounded-full animate-spin border-t-blue-500"></div>
+      <div className="loader"></div>
+      <p className="text-gray-500 pl-3">{title}</p>
+    </div>
+  );
+};
