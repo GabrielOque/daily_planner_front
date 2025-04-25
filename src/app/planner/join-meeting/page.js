@@ -251,11 +251,10 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const dispatch = useDispatch();
   const roomName = new URLSearchParams(window.location.search).get("roomName");
   const userName = new URLSearchParams(window.location.search).get("userName");
-  const { roomInstance: savedInstance, isFloatingMeeting } = useSelector(
+  const { roomInstance: savedInstance } = useSelector(
     (state) => state.userAuth
   );
   const [loading, setLoading] = useState(true);
-  const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -286,7 +285,6 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         // Manejar participantes que se conectan
         room.on("participantConnected", (p) => {
           console.log("Nuevo participante conectado:", p);
-          setParticipants((prev) => [...prev, p]);
 
           // Suscribirse a los tracks si están disponibles
           if (p.tracks) {
@@ -298,11 +296,6 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         room.on("trackSubscribed", (track, participant) => {
           console.log("Track suscrito:", track);
           // Actualizar el estado de los tracks del participante si es necesario
-          setParticipants((prev) =>
-            prev.map((p) =>
-              p === participant ? { ...p, tracks: [...p.tracks, track] } : p
-            )
-          );
         });
 
         room.on("disconnected", (reason) => {
