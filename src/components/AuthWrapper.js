@@ -11,15 +11,15 @@ const AuthWrapper = ({ children, loading = false }) => {
       }`}
     >
       <div className="flex w-full h-full p-2 lg:p-4 2xl:p-8 gap-x-4 items-center">
-        <div className="w-1/2 md:block hidden h-full bg-neutral rounded-2xl">
-          <h1 className="text-neutralLighter font-bold text-4xl pl-8 pt-12">
-            Daily Planner
+        <div className="w-1/2 md:block hidden h-full bg-neutral rounded-2xl relative">
+          <h1 className="text-neutralLighter font-bold text-5xl pl-8 pt-8 absolute">
+            Daily <br /> Planner
           </h1>
-          <div className="justify-center w-full mt-4 flex items-center py-16">
+          <div className="justify-center w-full h-full mb-6 flex items-center">
             <img
               src="/checklist.svg"
               alt="Calendar"
-              className="h-[400px] 2xl:h-[500px]"
+              className="h-[300px] 2xl:h-[400px]"
             />
           </div>
         </div>
@@ -32,11 +32,7 @@ const AuthWrapper = ({ children, loading = false }) => {
               />
             )}
             <div className="md:hidden flex">
-              <img
-                src="/checklist.svg"
-                alt="Calendar"
-                className="h-[200px] pb-4"
-              />
+              <img src="/checklist.svg" alt="Calendar" className="h-[200px]" />
             </div>
             {children}
           </>

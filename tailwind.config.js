@@ -19,9 +19,9 @@ module.exports = {
 
         textPrimary: "#FFFFFF", // Texto principal
         textSecondary: "#444444ff", // Texto secundario o deshabilitado
-        textContrast: "#111111", // Texto en fondos claros
+        textContrast: "#212529", // Texto en fondos claros
 
-        primary: "#FDC938", // Amarillo (botón "Get Started", resaltes clave)
+        primary: "#FFD43B", // Amarillo (botón "Get Started", resaltes clave)
         primaryDark: "#D9A600", // Amarillo más oscuro para hover
 
         accentRed: "#FC5C45", // Rojo para alertas o tags destacados

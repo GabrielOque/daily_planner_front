@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Fira+Code:wght@300..700&family=Lexend+Deca:wght@100..900&family=Lexend:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+html {
+  font-family: "Lexend Deca", sans-serif;
+}
 .scroll-custom {
   scrollbar-width: thin;
   scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
