@@ -56,42 +56,47 @@ export default function JoinMeeting() {
           <h1 className="text-2xl md:text-4xl font-bold mb-4">
             Unirse a la reunión
           </h1>
-          <div className="justify-center w-full mt-4 flex items-center">
+          <div className="justify-center w-4/5 h-[200px] md:w-3/5 md:h-3/5 rounded-xl mt-4 flex items-center bg-neutral overflow-hidden">
             {isCameraEnabled ? (
               <video
                 ref={videoRef}
                 autoPlay
                 muted
                 playsInline
-                className="h-[200px] 2xl:h-[400px] rounded-lg object-cover"
+                className="w-full object-cover"
               />
             ) : (
-              <img
-                src="/camera.svg"
-                alt="camera"
-                className="h-[200px] 2xl:h-[400px]"
-              />
+              <div className="w-full h-full flex items-center justify-center flex-col relative">
+                <p className="text-sideBar text-sm font-regular absolute top-4">
+                  La cámara está desactivada
+                </p>
+                <i className="fad fa-webcam-slash text-textPrimary text-3xl" />
+              </div>
             )}
           </div>
           <div className="pt-4 flex gap-x-4 w-40 justify-between">
             <span
-              className="w-8 text-center transition-transform duration-200 cursor-pointer"
+              className="w-14 h-10 flex justify-center items-center rounded-xl transition-transform duration-200 cursor-pointer border-2 border-gray-300 text-neutral overflow-hidden"
               onClick={() => setIsMicrophoneEnabled(!isMicrophoneEnabled)}
             >
               <i
-                className={`fas ${
-                  isMicrophoneEnabled ? "fa-microphone" : "fa-microphone-slash"
+                className={`w-full h-full text-center pt-2 text-xl fad ${
+                  isMicrophoneEnabled
+                    ? "fa-microphone "
+                    : "fa-microphone-slash bg-red-700 text-textPrimary"
                 } text-2xl`}
               />
             </span>
 
             <span
-              className="w-8 text-center transition-transform duration-200 cursor-pointer"
+              className="w-14 h-10 flex justify-center items-center rounded-xl transition-transform duration-200 cursor-pointer border-2 border-gray-300 text-neutral overflow-hidden"
               onClick={() => setIsCameraEnabled(!isCameraEnabled)}
             >
               <i
-                className={`fas ${
-                  isCameraEnabled ? "fa-video" : "fa-video-slash"
+                className={`w-full h-full text-center pt-2 text-xl fad ${
+                  isCameraEnabled
+                    ? "fa-video"
+                    : "fa-video-slash bg-red-700 text-textPrimary"
                 } text-2xl`}
               />
             </span>
@@ -99,7 +104,7 @@ export default function JoinMeeting() {
 
           <div className="flex justify-center gap-x-4 w-80 pt-4">
             <Button
-              paddingY="py-1"
+              paddingY="py-2"
               paddingX="px-2"
               background="bg-white"
               border="border-2 border-gray-300"
@@ -123,7 +128,7 @@ export default function JoinMeeting() {
                 setConfirmed(true);
               }}
             >
-              Unirse a la reunión
+              Unirse ahora
             </Button>
           </div>
         </div>
