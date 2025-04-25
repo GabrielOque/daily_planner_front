@@ -255,18 +255,19 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
     (state) => state.userAuth
   );
   const [loading, setLoading] = useState(true);
+  const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
-    if (savedInstance) {
-      console.log("🟡 Ya existe una sala activa, se reutiliza.");
-      setLoading(false);
-      return;
-    }
-
     let mounted = true;
     let currentRoom = null;
 
     const joinRoom = async () => {
+      if (savedInstance) {
+        console.log("🟡 Ya existe una sala activa, se reutiliza.");
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await axios.post(
           `${NEXT_PUBLIC_API_URL}/user/join-meeting`,
@@ -282,9 +283,28 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         room.localParticipant.setCameraEnabled(isCameraEnabled);
         room.localParticipant.setMicrophoneEnabled(isMicrophoneEnabled);
 
-        room.on("participantConnected", (p) =>
-          p.tracks.forEach((t) => t.subscribe())
-        );
+        // Manejar participantes que se conectan
+        room.on("participantConnected", (p) => {
+          console.log("Nuevo participante conectado:", p);
+          setParticipants((prev) => [...prev, p]);
+
+          // Suscribirse a los tracks si están disponibles
+          if (p.tracks) {
+            p.tracks.forEach((t) => t.subscribe());
+          }
+        });
+
+        // Detectar cuando un participante agrega nuevos tracks
+        room.on("trackSubscribed", (track, participant) => {
+          console.log("Track suscrito:", track);
+          // Actualizar el estado de los tracks del participante si es necesario
+          setParticipants((prev) =>
+            prev.map((p) =>
+              p === participant ? { ...p, tracks: [...p.tracks, track] } : p
+            )
+          );
+        });
+
         room.on("disconnected", (reason) => {
           console.warn("🔌 Desconectado. Motivo:", reason);
           if (!room.isConnected) {
