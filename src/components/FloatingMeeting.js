@@ -1,8 +1,7 @@
 // components/FloatingMeeting.js
 "use client";
 import { useSelector, useDispatch } from "react-redux";
-// import Draggable from "react-draggable";
-import Draggable from "react-draggable";
+import Draggable from "react-draggable"; // Importa correctamente Draggable
 import { Resizable } from "re-resizable";
 import {
   setIsFloatingMeeting,
@@ -16,7 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 import "@livekit/components-styles";
 
-//Constants
+// Constants
 const configProps = {};
 
 const FloatingMeeting = () => {
@@ -30,7 +29,7 @@ const FloatingMeeting = () => {
 
   return (
     <RoomContext.Provider value={roomInstance}>
-      <Draggable bounds="body" handle=".drag-handle">
+      <Draggable bounds="body" handle=".drag-handle" cancel=".no-drag">
         <Resizable
           defaultSize={{ width: 300, height: 200 }}
           minWidth={300}
@@ -52,6 +51,7 @@ const FloatingMeeting = () => {
             bottom: "1rem",
             right: "1rem",
             zIndex: 9999,
+            touchAction: "none", // Asegúrate de manejar bien los gestos táctiles
           }}
           className="bg-black rounded-xl pb-5 pt-1 shadow-lg overflow-hidden cursor-move"
         >
@@ -66,7 +66,8 @@ const FloatingMeeting = () => {
                     `/planner/join-meeting/?roomName=room-7109&userName=anfitrion`
                   );
                 }}
-                className="bg-white text-black px-2 py-0.5 rounded text-xs"
+                className="bg-white text-black px-2 py-0.5 rounded text-xs z-10 no-drag" // Aplicamos cancel aquí
+                style={{ zIndex: 10000 }} // Aseguramos que el botón esté por encima
               >
                 Maximizar
               </button>

@@ -147,6 +147,105 @@ export default function JoinMeeting() {
   );
 }
 
+// const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
+//   const router = useRouter();
+//   const dispatch = useDispatch();
+//   const roomName = new URLSearchParams(window.location.search).get("roomName");
+//   const userName = new URLSearchParams(window.location.search).get("userName");
+//   const { roomInstance: savedInstance, isFloatingMeeting } = useSelector(
+//     (state) => state.userAuth
+//   );
+//   const [roomInstance, setRoomInstance] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     if (savedInstance) {
+//       console.log("🟡 Ya existe una sala activa, se reutiliza.");
+//       setRoomInstance(savedInstance);
+//       setLoading(false);
+//       return;
+//     }
+
+//     let mounted = true;
+//     let currentRoom = null;
+
+//     const joinRoom = async () => {
+//       try {
+//         const res = await axios.post(
+//           `${NEXT_PUBLIC_API_URL}/user/join-meeting`,
+//           { roomName, userName }
+//         );
+//         console.log("🟢 Conectando a la sala:", res.data);
+//         const { token } = res.data;
+//         if (!mounted || !token) return;
+
+//         const room = new Room({ adaptiveStream: true, dynacast: true });
+//         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
+
+//         room.localParticipant.setCameraEnabled(isCameraEnabled);
+//         room.localParticipant.setMicrophoneEnabled(isMicrophoneEnabled);
+
+//         room.on("participantConnected", (p) =>
+//           p.tracks.forEach((t) => t.subscribe())
+//         );
+//         room.on("disconnected", (reason) => {
+//           console.warn("🔌 Desconectado. Motivo:", reason);
+//           if (!room.isConnected) {
+//             dispatch(setIsFloatingMeeting(false));
+//             dispatch(setRoomInstanceRedux(null)); // <--- limpia la instancia global
+//             dispatch(setIsMeeting(false));
+//             router.push("/planner/calendar");
+//           }
+//         });
+
+//         dispatch(setRoomInstanceRedux(room)); // <--- guarda la instancia global
+//         setRoomInstance(room); // <--- guarda localmente también
+//       } catch (err) {
+//         console.error("❌ Error al conectar:", err);
+//         dispatch(setIsMeeting(false));
+//         window.close();
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     joinRoom();
+
+//     return () => {
+//       mounted = false;
+//       currentRoom?.disconnect();
+//     };
+//   }, [roomName, userName, savedInstance]);
+
+//   if (loading) return <Connecting title="Conectando a la reunión..." />;
+//   if (!roomInstance)
+//     return <Connecting title="Esperando a los participantes..." />;
+
+//   return (
+//     <RoomContext.Provider value={roomInstance}>
+//       <div
+//         className="relative"
+//         data-lk-theme="default"
+//         style={{ height: "100vh", overflow: "hidden" }}
+//       >
+//         <button
+//           className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2  rounded"
+//           onClick={() => {
+//             dispatch(setRoomInstanceRedux(roomInstance));
+//             dispatch(setIsFloatingMeeting(true));
+//             dispatch(setIsMeeting(false));
+//             router.push("/planner");
+//           }}
+//         >
+//           Minimizar
+//         </button>
+//         <MyVideoConference />
+//         <RoomAudioRenderer />
+//       </div>
+//     </RoomContext.Provider>
+//   );
+// };
+
 const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -155,13 +254,11 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const { roomInstance: savedInstance, isFloatingMeeting } = useSelector(
     (state) => state.userAuth
   );
-  const [roomInstance, setRoomInstance] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (savedInstance) {
       console.log("🟡 Ya existe una sala activa, se reutiliza.");
-      setRoomInstance(savedInstance);
       setLoading(false);
       return;
     }
@@ -192,14 +289,13 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
           console.warn("🔌 Desconectado. Motivo:", reason);
           if (!room.isConnected) {
             dispatch(setIsFloatingMeeting(false));
-            dispatch(setRoomInstanceRedux(null)); // <--- limpia la instancia global
+            dispatch(setRoomInstanceRedux(null));
             dispatch(setIsMeeting(false));
             router.push("/planner/calendar");
           }
         });
 
-        dispatch(setRoomInstanceRedux(room)); // <--- guarda la instancia global
-        setRoomInstance(room); // <--- guarda localmente también
+        dispatch(setRoomInstanceRedux(room)); // guarda en Redux
       } catch (err) {
         console.error("❌ Error al conectar:", err);
         dispatch(setIsMeeting(false));
@@ -218,11 +314,11 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   }, [roomName, userName, savedInstance]);
 
   if (loading) return <Connecting title="Conectando a la reunión..." />;
-  if (!roomInstance)
+  if (!savedInstance)
     return <Connecting title="Esperando a los participantes..." />;
 
   return (
-    <RoomContext.Provider value={roomInstance}>
+    <RoomContext.Provider value={savedInstance}>
       <div
         className="relative"
         data-lk-theme="default"
@@ -231,7 +327,7 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         <button
           className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2  rounded"
           onClick={() => {
-            dispatch(setRoomInstanceRedux(roomInstance));
+            dispatch(setRoomInstanceRedux(savedInstance));
             dispatch(setIsFloatingMeeting(true));
             dispatch(setIsMeeting(false));
             router.push("/planner");
