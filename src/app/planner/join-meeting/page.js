@@ -116,8 +116,8 @@ export default function JoinMeeting() {
               fontSize="text-sm md:text-md"
               textColor="text-neutral"
               onClick={() => {
+                router.push("/planner/calendar");
                 setIsCameraEnabled(false);
-                window.close();
               }}
             >
               Cancelar
