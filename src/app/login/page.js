@@ -42,56 +42,58 @@ const Login = () => {
 
   return (
     <AuthWrapper>
-      <h1 className="text-neutral font-bold text-2xl md:text-4xl">
-        Iniciar sesión
-      </h1>
-      {/* <button onClick={() => router.push("/planner")}>Fast go</button> */}
-      <div className="w-full px-4 md:px-12 2xl:px-40 pt-6 space-y-3">
-        <CustomInput
-          placeholder="oquendogabriel18@gmail.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <CustomInput
-          placeholder="Contraseña"
-          value={password}
-          password
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="flex justify-center w-full mt-6 px-4 md:px-12 2xl:px-40">
-        <Button
-          loading={isLoading}
-          paddingY="py-2"
-          background="bg-primary"
-          fontSize="text-md md:text-xl"
-          textColor="text-neutral"
-          onClick={handleCreateAccount}
-        >
+      <div className="flex flex-col items-center justify-center w-full px-10 xl:w-2/3">
+        <h1 className="text-textContrast font-bold text-2xl md:text-5xl w-full">
           Iniciar sesión
-        </Button>
-      </div>
-      <div className="px-4 md:px-12 2xl:px-40 mt-6">
-        <div className="text-textSecondary font-semibold text-base text-center md:text-xl">
-          ¿No tienes una cuenta?{" "}
-          <button
-            className="text-primary font-bold cursor-pointer underline"
-            onClick={() => router.push("/create-account")}
-          >
-            Regístrate
-          </button>
+        </h1>
+        {/* <button onClick={() => router.push("/planner")}>Fast go</button> */}
+        <div className="w-full pt-6 space-y-3">
+          <CustomInput
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <CustomInput
+            placeholder="Contraseña"
+            value={password}
+            password
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
-      </div>
-      <div className="px-4 md:px-12 2xl:px-40 mt-6">
-        <p className="text-textSecondary font-semibold text-md md:text-xl text-center">
-          ¿Olvidaste tu contraseña?{" "}
-          <button
-            className="text-primary font-bold cursor-pointer underline"
-            onClick={() => router.push("/recovery")}
+        <div className="flex justify-center w-full mt-6">
+          <Button
+            loading={isLoading}
+            paddingY="py-3"
+            background="bg-primary"
+            fontSize="text-md md:text-xl"
+            textColor="text-textContrast"
+            onClick={handleCreateAccount}
           >
-            Restablecer contraseña
-          </button>
-        </p>
+            Iniciar sesión
+          </Button>
+        </div>
+        <div className="px-4 md:px-12 2xl:px-40 mt-6 pt-10">
+          <div className="text-textContrast font-regular text-base text-center md:text-xl flex items-center justify-center gap-2">
+            <p>¿No tienes una cuenta? </p>
+            <button
+              className="text-primary font-bold cursor-pointer"
+              onClick={() => router.push("/create-account")}
+            >
+              Regístrate
+            </button>
+          </div>
+        </div>
+        <div className="px-4 md:px-12 2xl:px-40 mt-6">
+          <div className="text-textContrast font-regular text-md md:text-xl text-center flex items-center justify-center gap-2">
+            <p>¿Olvidaste tu contraseña?</p>
+            <button
+              className="text-primary font-bold cursor-pointer"
+              onClick={() => router.push("/recovery")}
+            >
+              Restablecer contraseña
+            </button>
+          </div>
+        </div>
       </div>
     </AuthWrapper>
   );

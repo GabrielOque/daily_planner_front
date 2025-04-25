@@ -48,34 +48,38 @@ export default function Home() {
 
   return (
     <AuthWrapper loading={loading}>
-      <h1 className="text-neutral font-bold text-2xl md:text-4xl text-center w-full">
-        Mente productiva
-      </h1>
-      <p className="text-textSecondary font-semibold pt-6 text-md md:text-xl px-4 md:px-12 2xl:px-36">
-        Con solo estas funciones, Daily Planner está personalizado para personas
-        que buscan una manera libre de estrés de mantenerse enfocadas en sus
-        objetivos, proyectos y tareas.
-      </p>
-      <div className="flex justify-center w-full mt-6 px-12 2xl:px-36">
-        <Button
-          paddingY="py-2"
-          background="bg-primary"
-          fontSize="text-md md:text-xl"
-          textColor="text-neutral"
-          onClick={() => router.push("/create-account")}
-        >
-          Empezar en Daily Planner
-        </Button>
-      </div>
-      <div className="px-12 2xl:px-24 mt-6 w-full">
-        <div className="text-textSecondary font-semibold text-md md:text-xl text-center">
-          ¿Ya tienes una cuenta?{" "}
-          <button
-            className="text-primary font-bold cursor-pointer underline"
-            onClick={() => router.push("/login")}
-          >
-            Inicia sesión
-          </button>
+      <div className="flex flex-col items-center justify-center w-full">
+        <div className="flex flex-col items-center justify-center  w-full px-10 xl:w-2/3">
+          <h1 className="text-textContrast font-bold text-3xl md:text-5xl text-left w-full">
+            Mente productiva
+          </h1>
+          <p className="text-textSecondary font-regular pt-6 text-md md:text-xl">
+            Con solo estas funciones, Daily Planner está personalizado para
+            personas que buscan una manera libre de estrés de mantenerse
+            enfocadas en sus objetivos, proyectos y tareas.
+          </p>
+          <div className="flex justify-center w-full mt-6">
+            <Button
+              paddingY="py-3"
+              background="bg-primary"
+              fontSize="text-md md:text-xl"
+              textColor="text-textContrast"
+              onClick={() => router.push("/create-account")}
+            >
+              Empezar en Daily Planner
+            </Button>
+          </div>
+          <div className="mt-6 w-full pt-10">
+            <div className="text-textContrast font-regular text-md md:text-xl text-center flex items-center justify-center gap-2">
+              <p>¿Ya tienes una cuenta?</p>
+              <button
+                className="text-primary font-bold cursor-pointer"
+                onClick={() => router.push("/login")}
+              >
+                Inicia sesión
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </AuthWrapper>
