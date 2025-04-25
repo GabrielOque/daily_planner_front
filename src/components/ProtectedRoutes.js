@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import Connecting from "@/components/Connecting";
 import { useRouter } from "next/navigation";
 import { getToken } from "@/utils/auth";
 import axios from "@/utils/axiosInstance";
@@ -41,7 +42,7 @@ const ProtectedRoutes = ({ children }) => {
   }, []);
 
   if (!user || !user?.token) {
-    return null;
+    return <Connecting title="Verificando sesión..." />;
   }
 
   return <div>{children}</div>;

@@ -9,6 +9,7 @@ const userSlice = createSlice({
     isLoggedIn: false,
     isLoading: false,
     error: null,
+    isMeeting: false,
   },
 
   reducers: {
@@ -26,6 +27,9 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
+    },
+    setIsMeeting: (state, action) => {
+      state.isMeeting = action.payload;
     },
   },
 
@@ -63,4 +67,5 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { logoutUser, clearError, setUserAuth } = userSlice.actions;
+export const { logoutUser, clearError, setUserAuth, setIsMeeting } =
+  userSlice.actions;

@@ -400,11 +400,18 @@ const Calendar = () => {
             <div className="w-full">
               <button
                 className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-200"
+                // onClick={() => {
+                //   router.push(
+                //     "/planner/join-meeting/?roomName=room-8283&userName=anfitrion"
+                //   );
+                //   setSelectedEvent(null);
+                // }}
                 onClick={() => {
-                  router.push(
-                    "/planner/join-meeting/?roomName=room-8283&userName=anfitrion"
-                  );
                   setSelectedEvent(null);
+                  window.open(
+                    `${window.location.origin}/planner/join-meeting/?roomName=room-8283&userName=anfitrion`,
+                    "_blank"
+                  );
                 }}
               >
                 Unirse a la reunión

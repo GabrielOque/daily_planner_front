@@ -1,7 +1,9 @@
 "use client";
 import Button from "@/components/Button";
+import Connecting from "@/components/Connecting";
+import { useDispatch } from "react-redux";
+import { setIsMeeting } from "@/store/features/user/userSlice";
 import {
-  formatChatMessageLinks,
   VideoConference,
   RoomAudioRenderer,
   RoomContext,
@@ -18,6 +20,7 @@ import "@livekit/components-styles";
 
 export default function JoinMeeting() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [confirmed, setConfirmed] = useState(false);
   const [isMicrophoneEnabled, setIsMicrophoneEnabled] = useState(false);
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
@@ -107,7 +110,8 @@ export default function JoinMeeting() {
               textColor="text-neutral"
               onClick={() => {
                 setIsCameraEnabled(false);
-                router.push("/planner/calendar");
+                window.close();
+                // router.push("/planner/calendar");
               }}
             >
               Cancelar
@@ -120,6 +124,7 @@ export default function JoinMeeting() {
               fontSize="text-sm md:text-md"
               textColor="text-neutral"
               onClick={() => {
+                dispatch(setIsMeeting(true));
                 setConfirmed(true);
               }}
             >
@@ -139,6 +144,7 @@ export default function JoinMeeting() {
 
 const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const roomName = new URLSearchParams(window.location.search).get("roomName");
   const userName = new URLSearchParams(window.location.search).get("userName");
 
@@ -169,12 +175,6 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
 
         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
 
-        // const localParticipant = room?.localParticipant;
-        // if (!localParticipant?.isCameraEnabled)
-        //   localParticipant?.setCameraEnabled(true);
-        // if (!localParticipant?.isMicrophoneEnabled)
-        //   localParticipant?.setMicrophoneEnabled(true);
-
         if (isCameraEnabled) {
           room.localParticipant.setCameraEnabled(true);
         }
@@ -192,7 +192,9 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         };
 
         const handleParticipantDisconnected = (participant) => {
-          router.push("/planner/calendar");
+          dispatch(setIsMeeting(false));
+          // router.push("/planner/calendar");
+          window.close();
           console.log(`${participant?.identity || ""} se desconectó`);
         };
 
@@ -202,6 +204,9 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
         currentRoom = room;
         setRoomInstance(room);
       } catch (err) {
+        dispatch(setIsMeeting(false));
+        // router.push("/planner/calendar");
+        window.close();
         console.error("Error al conectarse:", err);
       } finally {
         setLoading(false);
@@ -224,31 +229,19 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
     <RoomContext.Provider value={roomInstance}>
       <div
         data-lk-theme="default"
-        style={{ height: "88vh", overflowX: "hidden", overflowY: "hidden" }}
+        style={{ height: "100vh", overflowX: "hidden", overflowY: "hidden" }}
       >
-        <MyVideoConference chatMessageFormatter={formatChatMessageLinks} />
+        <MyVideoConference />
         <RoomAudioRenderer />
       </div>
     </RoomContext.Provider>
   );
 };
 
-function MyVideoConference() {
+function MyVideoConference({ chatMessageFormatter }) {
   return (
-    <div className="h-[88vh] overflow-hidden rounded-2xl bg-neutral">
-      <VideoConference
-        chatMessageInputProps={{ placeholder: "Escribe un mensaje..." }}
-      />
+    <div className={`h-[100vh] overflow-hidden bg-neutral`}>
+      <VideoConference />
     </div>
   );
 }
-
-const Connecting = ({ title }) => {
-  return (
-    <div className="flex items-center justify-center h-full animate-pulse">
-      <div className="flex items-center justify-center w-10 h-10 border-4 border-gray-300 rounded-full animate-spin border-t-blue-500"></div>
-      <div className="loader"></div>
-      <p className="text-gray-500 pl-3">{title}</p>
-    </div>
-  );
-};

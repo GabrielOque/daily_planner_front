@@ -37,7 +37,8 @@
 
 /* globals.css livekit */
 [data-lk-theme="default"] .lk-chat {
-  border-radius: 1rem; /* 16px (rounded-2xl en Tailwind) */
-  height: 88vh;
+  border-radius: 0.75rem; /* 16px (rounded-2xl en Tailwind) */
+  height: 91vh;
+  margin-top: 7px; /* 16px (mt-4 en Tailwind) */
   overflow: hidden;
 }
