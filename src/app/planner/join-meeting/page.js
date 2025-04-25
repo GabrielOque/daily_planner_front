@@ -1,8 +1,13 @@
+// components/JoinMeeting.js
 "use client";
 import Button from "@/components/Button";
 import Connecting from "@/components/Connecting";
-import { useDispatch } from "react-redux";
-import { setIsMeeting } from "@/store/features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsMeeting,
+  setIsFloatingMeeting,
+  setRoomInstance as setRoomInstanceRedux,
+} from "@/store/features/user/userSlice";
 import {
   VideoConference,
   RoomAudioRenderer,
@@ -24,12 +29,15 @@ export default function JoinMeeting() {
   const [confirmed, setConfirmed] = useState(false);
   const [isMicrophoneEnabled, setIsMicrophoneEnabled] = useState(false);
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
-
+  const { roomInstance, isFloatingMeeting } = useSelector(
+    (state) => state.userAuth
+  );
   const videoRef = useRef(null);
+
+  console.log(roomInstance);
 
   useEffect(() => {
     let stream;
-
     const enableCamera = async () => {
       if (isCameraEnabled && videoRef.current) {
         try {
@@ -42,19 +50,15 @@ export default function JoinMeeting() {
         videoRef.current.srcObject = null;
       }
     };
-
     enableCamera();
-
     return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
+      if (stream) stream.getTracks().forEach((t) => t.stop());
     };
   }, [isCameraEnabled]);
 
   return (
     <>
-      {!confirmed ? (
+      {!confirmed && !roomInstance && !isFloatingMeeting ? (
         <div className="flex flex-col items-center justify-center h-full px-2 bg-gray-100">
           <h1 className="text-2xl md:text-4xl font-bold mb-4">
             Unirse a la reunión
@@ -83,28 +87,26 @@ export default function JoinMeeting() {
               onClick={() => setIsMicrophoneEnabled(!isMicrophoneEnabled)}
             >
               <i
-                className={`w-full h-full text-center pt-2 text-xl fad ${
+                className={`${
                   isMicrophoneEnabled
-                    ? "fa-microphone "
-                    : "fa-microphone-slash bg-red-700 text-textPrimary"
-                } text-2xl`}
+                    ? "fad fa-microphone"
+                    : "fad fa-microphone-slash bg-red-700 text-textPrimary"
+                } text-2xl w-full h-full text-center pt-2`}
               />
             </span>
-
             <span
               className="w-14 h-10 flex justify-center items-center rounded-xl transition-transform duration-200 cursor-pointer border-2 border-gray-300 text-neutral overflow-hidden"
               onClick={() => setIsCameraEnabled(!isCameraEnabled)}
             >
               <i
-                className={`w-full h-full text-center pt-2 text-xl fad ${
+                className={`${
                   isCameraEnabled
-                    ? "fa-video"
-                    : "fa-video-slash bg-red-700 text-textPrimary"
-                } text-2xl`}
+                    ? "fad fa-video"
+                    : "fad fa-video-slash bg-red-700 text-textPrimary"
+                } text-2xl w-full h-full text-center pt-2`}
               />
             </span>
           </div>
-
           <div className="flex justify-center gap-x-4 w-80 pt-4">
             <Button
               paddingY="py-2"
@@ -116,12 +118,10 @@ export default function JoinMeeting() {
               onClick={() => {
                 setIsCameraEnabled(false);
                 window.close();
-                // router.push("/planner/calendar");
               }}
             >
               Cancelar
             </Button>
-
             <Button
               paddingY="py-1"
               paddingX="px-2"
@@ -152,11 +152,20 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   const dispatch = useDispatch();
   const roomName = new URLSearchParams(window.location.search).get("roomName");
   const userName = new URLSearchParams(window.location.search).get("userName");
-
+  const { roomInstance: savedInstance, isFloatingMeeting } = useSelector(
+    (state) => state.userAuth
+  );
   const [roomInstance, setRoomInstance] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (savedInstance) {
+      console.log("🟡 Ya existe una sala activa, se reutiliza.");
+      setRoomInstance(savedInstance);
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
     let currentRoom = null;
 
@@ -164,55 +173,37 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
       try {
         const res = await axios.post(
           `${NEXT_PUBLIC_API_URL}/user/join-meeting`,
-          {
-            roomName,
-            userName,
-          }
+          { roomName, userName }
         );
+        console.log("🟢 Conectando a la sala:", res.data);
         const { token } = res.data;
-
         if (!mounted || !token) return;
 
-        const room = new Room({
-          adaptiveStream: true,
-          dynacast: true,
-        });
-
+        const room = new Room({ adaptiveStream: true, dynacast: true });
         await room.connect(NEXT_PUBLIC_LIVEKIT_URL, token);
 
-        if (isCameraEnabled) {
-          room.localParticipant.setCameraEnabled(true);
-        }
-        if (isMicrophoneEnabled) {
-          room.localParticipant.setMicrophoneEnabled(true);
-        }
+        room.localParticipant.setCameraEnabled(isCameraEnabled);
+        room.localParticipant.setMicrophoneEnabled(isMicrophoneEnabled);
 
-        const handleParticipantConnected = (participant) => {
-          console.log("Participant", participant);
-          participant?.tracks?.forEach((track) => {
-            if (track?.kind === "video" || track?.kind === "audio") {
-              track?.subscribe();
-            }
-          });
-        };
+        room.on("participantConnected", (p) =>
+          p.tracks.forEach((t) => t.subscribe())
+        );
+        room.on("disconnected", (reason) => {
+          console.warn("🔌 Desconectado. Motivo:", reason);
+          if (!room.isConnected) {
+            dispatch(setIsFloatingMeeting(false));
+            dispatch(setRoomInstanceRedux(null)); // <--- limpia la instancia global
+            dispatch(setIsMeeting(false));
+            router.push("/planner/calendar");
+          }
+        });
 
-        const handleParticipantDisconnected = (participant) => {
-          dispatch(setIsMeeting(false));
-          // router.push("/planner/calendar");
-          window.close();
-          console.log(`${participant?.identity || ""} se desconectó`);
-        };
-
-        room.on("participantConnected", handleParticipantConnected);
-        room.on("disconnected", handleParticipantDisconnected);
-
-        currentRoom = room;
-        setRoomInstance(room);
+        dispatch(setRoomInstanceRedux(room)); // <--- guarda la instancia global
+        setRoomInstance(room); // <--- guarda localmente también
       } catch (err) {
+        console.error("❌ Error al conectar:", err);
         dispatch(setIsMeeting(false));
-        // router.push("/planner/calendar");
         window.close();
-        console.error("Error al conectarse:", err);
       } finally {
         setLoading(false);
       }
@@ -224,18 +215,30 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
       mounted = false;
       currentRoom?.disconnect();
     };
-  }, [roomName, userName, router]);
+  }, [roomName, userName, savedInstance]);
 
-  if (loading) return <Connecting title={"Conectando a la reunión..."} />;
+  if (loading) return <Connecting title="Conectando a la reunión..." />;
   if (!roomInstance)
-    return <Connecting title={"Esperando a los participantes..."} />;
+    return <Connecting title="Esperando a los participantes..." />;
 
   return (
     <RoomContext.Provider value={roomInstance}>
       <div
+        className="relative"
         data-lk-theme="default"
-        style={{ height: "100vh", overflowX: "hidden", overflowY: "hidden" }}
+        style={{ height: "100vh", overflow: "hidden" }}
       >
+        <button
+          className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2  rounded"
+          onClick={() => {
+            dispatch(setRoomInstanceRedux(roomInstance));
+            dispatch(setIsFloatingMeeting(true));
+            dispatch(setIsMeeting(false));
+            router.push("/planner");
+          }}
+        >
+          Minimizar
+        </button>
         <MyVideoConference />
         <RoomAudioRenderer />
       </div>
@@ -243,9 +246,9 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
   );
 };
 
-function MyVideoConference({ chatMessageFormatter }) {
+function MyVideoConference() {
   return (
-    <div className={`h-[100vh] overflow-hidden bg-neutral`}>
+    <div className="h-[100vh] overflow-hidden bg-neutral">
       <VideoConference />
     </div>
   );

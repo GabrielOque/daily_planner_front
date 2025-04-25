@@ -10,6 +10,8 @@ const userSlice = createSlice({
     isLoading: false,
     error: null,
     isMeeting: false,
+    isFloatingMeeting: false,
+    roomInstance: null,
   },
 
   reducers: {
@@ -30,6 +32,12 @@ const userSlice = createSlice({
     },
     setIsMeeting: (state, action) => {
       state.isMeeting = action.payload;
+    },
+    setIsFloatingMeeting: (state, action) => {
+      state.isFloatingMeeting = action.payload;
+    },
+    setRoomInstance: (state, action) => {
+      state.roomInstance = action.payload;
     },
   },
 
@@ -67,5 +75,11 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { logoutUser, clearError, setUserAuth, setIsMeeting } =
-  userSlice.actions;
+export const {
+  logoutUser,
+  clearError,
+  setUserAuth,
+  setIsMeeting,
+  setIsFloatingMeeting,
+  setRoomInstance,
+} = userSlice.actions;

@@ -2,6 +2,7 @@
 import { useSelector } from "react-redux";
 import Sidebar from "@/components/Sidebar";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
+import FloatingMeeting from "@/components/FloatingMeeting";
 
 export default function Planner({ children }) {
   const { isMeeting } = useSelector((state) => state.userAuth);
@@ -23,6 +24,7 @@ export default function Planner({ children }) {
             }`}
           >
             {children}
+            <FloatingMeeting />
           </div>
         </div>
       </div>
