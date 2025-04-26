@@ -20,6 +20,9 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.isLoading = false;
       state.error = null;
+      state.isMeeting = false;
+      state.isFloatingMeeting = false;
+      state.roomInstance = null;
     },
     clearError: (state) => {
       state.error = null;

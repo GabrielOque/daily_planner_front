@@ -72,9 +72,9 @@ const Login = () => {
             Iniciar sesión
           </Button>
         </div>
-        <div className="px-4 md:px-12 2xl:px-40 mt-6 pt-10">
-          <div className="text-textContrast font-regular text-base text-center md:text-xl flex items-center justify-center gap-2">
-            <p>¿No tienes una cuenta? </p>
+        <div className="px-4 md:px-12 2xl:px-40 mt-6">
+          <div className="text-textContrast font-regular text-base text-center md:text-xl flex-col items-center justify-center gap-2">
+            <p className="whitespace-nowrap">¿No tienes una cuenta? </p>
             <button
               className="text-primary font-bold cursor-pointer"
               onClick={() => router.push("/create-account")}
@@ -83,11 +83,11 @@ const Login = () => {
             </button>
           </div>
         </div>
-        <div className="px-4 md:px-12 2xl:px-40 mt-6">
-          <div className="text-textContrast font-regular text-md md:text-xl text-center flex items-center justify-center gap-2">
-            <p>¿Olvidaste tu contraseña?</p>
+        <div className="px-4 md:px-12 2xl:px-40 mt-4">
+          <div className="text-textContrast font-regular text-md md:text-xl text-center flex-col items-center justify-center gap-2">
+            <p className="whitespace-nowrap">¿Olvidaste tu contraseña?</p>
             <button
-              className="text-primary font-bold cursor-pointer"
+              className="text-primary font-bold cursor-pointer whitespace-nowrap"
               onClick={() => router.push("/recovery")}
             >
               Restablecer contraseña

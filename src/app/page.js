@@ -70,7 +70,7 @@ export default function Home() {
             </Button>
           </div>
           <div className="mt-6 w-full pt-10">
-            <div className="text-textContrast font-regular text-md md:text-xl text-center flex items-center justify-center gap-2">
+            <div className="text-textContrast font-regular text-md md:text-xl text-center flex-cols items-center justify-center gap-2">
               <p>¿Ya tienes una cuenta?</p>
               <button
                 className="text-primary font-bold cursor-pointer"

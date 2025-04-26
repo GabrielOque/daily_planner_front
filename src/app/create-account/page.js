@@ -96,8 +96,8 @@ const CreateAccount = () => {
             Crear cuenta
           </Button>
         </div>
-        <div className="px-4 md:px-12 2xl:px-40 mt-6 pt-10">
-          <div className="text-textContrast font-regular text-md md:text-xl text-center flex items-center justify-center gap-2">
+        <div className="px-4 md:px-12 2xl:px-40 mt-6">
+          <div className="text-textContrast font-regular text-md md:text-xl text-center flex-col items-center justify-center gap-2">
             <p>¿Ya tienes una cuenta?</p>
             <button
               className="text-primary font-bold cursor-pointer"
