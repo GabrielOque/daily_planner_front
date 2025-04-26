@@ -63,7 +63,7 @@ const Calendar = () => {
     const end = info.event.end;
 
     const event = {
-      id: parseInt(info.event.id),
+      id: info.event.id,
       name: info.event.title,
       description: info.event.extendedProps.description,
       coordinator: info.event.extendedProps.coordinator,
@@ -118,7 +118,7 @@ const Calendar = () => {
 
   return (
     <>
-      <div className="p-2 bg-white flex items-start overflow-hidden h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] relative">
+      <div className=" flex items-start overflow-hidden h-[calc(100vh-80px)] md:h-[calc(100vh-98px)] relative">
         <div className="hidden lg:flex flex-col justify-between items-center mb-4">
           <DatePicker
             selected={selectedDate}

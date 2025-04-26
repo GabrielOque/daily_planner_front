@@ -30,15 +30,11 @@ export default function JoinMeeting() {
   const [confirmed, setConfirmed] = useState(false);
   const [isMicrophoneEnabled, setIsMicrophoneEnabled] = useState(false);
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
-  const [userName, setUserName] = useState(
-    `@${Math.floor(Math.random() * 100000000)}`
-  );
-  const { roomInstance, isFloatingMeeting } = useSelector(
+  const { roomInstance, isFloatingMeeting, user } = useSelector(
     (state) => state.userAuth
   );
+  const [userName, setUserName] = useState(`@${user.name}`);
   const videoRef = useRef(null);
-
-  console.log(roomInstance);
 
   useEffect(() => {
     let stream;
