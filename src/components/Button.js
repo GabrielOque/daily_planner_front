@@ -7,14 +7,18 @@ const Button = ({
   onClick,
   loading = false,
   children,
+  disabled = false,
 }) => {
   return (
     <button
       className={`rounded-lg font-semibold w-full ${border} ${paddingX} ${paddingY} ${background} ${fontSize} ${
-        loading ? "cursor-not-allowed opacity-40" : "cursor-pointer"
+        loading || disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"
       }`}
-      onClick={onClick}
-      disabled={loading}
+      onClick={() => {
+        if (!loading && !disabled) {
+          onClick();
+        }
+      }}
     >
       {loading ? (
         <i className="fas fa-spinner fa-spin ml-2 text-xl text-neutral" />

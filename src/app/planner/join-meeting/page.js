@@ -1,6 +1,7 @@
 // components/JoinMeeting.js
 "use client";
 import Button from "@/components/Button";
+import CustomInput from "@/components/CustomInput";
 import Connecting from "@/components/Connecting";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,7 +16,7 @@ import {
 } from "@livekit/components-react";
 import { Room } from "livekit-client";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import axios from "@/utils/axiosInstance";
 import {
   NEXT_PUBLIC_LIVEKIT_URL,
   NEXT_PUBLIC_API_URL,
@@ -29,6 +30,9 @@ export default function JoinMeeting() {
   const [confirmed, setConfirmed] = useState(false);
   const [isMicrophoneEnabled, setIsMicrophoneEnabled] = useState(false);
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+  const [userName, setUserName] = useState(
+    `@${Math.floor(Math.random() * 100000000)}`
+  );
   const { roomInstance, isFloatingMeeting } = useSelector(
     (state) => state.userAuth
   );
@@ -107,6 +111,16 @@ export default function JoinMeeting() {
               />
             </span>
           </div>
+          <div className="flex flex-col items-center justify-center mt-4">
+            <CustomInput
+              loading={false}
+              onChange={(e) => setUserName(e.target.value)}
+              value={userName}
+              placeholder="Nombre"
+              height="h-10 md:h-12"
+              className="w-80 mt-4 bg-slate-600"
+            />
+          </div>
           <div className="flex justify-center gap-x-4 w-80 pt-4">
             <Button
               paddingY="py-2"
@@ -141,18 +155,18 @@ export default function JoinMeeting() {
         <JoinConfirmed
           isMicrophoneEnabled={isMicrophoneEnabled}
           isCameraEnabled={isCameraEnabled}
+          userName={userName}
         />
       )}
     </>
   );
 }
 
-const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
+const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled, userName }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const roomName = new URLSearchParams(window.location.search).get("roomName");
-  const userName = new URLSearchParams(window.location.search).get("userName");
-  const { roomInstance: savedInstance } = useSelector(
+  const { roomInstance: savedInstance, user } = useSelector(
     (state) => state.userAuth
   );
   const [loading, setLoading] = useState(true);
@@ -170,8 +184,8 @@ const JoinConfirmed = ({ isMicrophoneEnabled, isCameraEnabled }) => {
 
       try {
         const res = await axios.post(
-          `${NEXT_PUBLIC_API_URL}/user/join-meeting`,
-          { roomName, userName }
+          `${NEXT_PUBLIC_API_URL}/event/join-meeting`,
+          { roomName, userEmail: user.email, userName }
         );
         console.log("🟢 Conectando a la sala:", res.data);
         const { token } = res.data;
