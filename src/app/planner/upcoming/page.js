@@ -212,7 +212,59 @@ const page = () => {
       },
     },
   ];
-  const mock2 = [];
+  const mock2 = [
+    {
+      title: "Tarea 1",
+      description: "Descripcion de la tarea 1",
+      date: "2023-10-01",
+      list: {
+        color: "yellow",
+        name: "Lista de estudio IUE",
+      },
+      tag: {
+        color: "red",
+        name: "Noveno semestre",
+      },
+      file: {
+        name: "Trabajo de grados version2",
+        url: "https://www.google.com",
+      },
+    },
+    {
+      title: "Tarea 2",
+      description: "Descripcion de la tarea 2",
+      date: "2023-10-01",
+      list: {
+        color: "red",
+        name: "Tarea 1",
+      },
+      tag: {
+        color: "red",
+        name: "Tarea 1",
+      },
+      file: {
+        name: "Tarea 1",
+        url: "https://www.google.com",
+      },
+    },
+    {
+      title: "Tarea 3",
+      description: "Descripcion de la tarea 3",
+      date: "2023-10-01",
+      list: {
+        color: "red",
+        name: "Tarea 1",
+      },
+      tag: {
+        color: "red",
+        name: "Tarea 1",
+      },
+      file: {
+        name: "Tarea 1",
+        url: "https://www.google.com",
+      },
+    },
+  ];
   const mock3 = [
     {
       title: "Tarea 1",
@@ -298,8 +350,8 @@ const page = () => {
           )}
         </div>
       </div>
-      <div className="w-full flex md:flex-row flex-col md:gap-x-4 gap-y-4 mt-4 items-start">
-        <div className="border border-sideBar rounded-lg p-3 md:w-1/2 w-full">
+      <div className="w-full flex xl:flex-row flex-col md:gap-x-4 gap-y-4 mt-4 items-start">
+        <div className="border border-sideBar rounded-lg p-3 xl:w-1/2 w-full">
           <p className="text-md md:text-xl font-bold text-neutral pb-4">
             Mañana
           </p>
@@ -326,7 +378,7 @@ const page = () => {
             )}
           </div>
         </div>
-        <div className=" border border-sideBar rounded-lg p-3 md:w-1/2 w-full">
+        <div className=" border border-sideBar rounded-lg p-3 xl:w-1/2 w-full">
           <p className="text-md md:text-xl font-bold text-neutral pb-4">
             Esta semana
           </p>

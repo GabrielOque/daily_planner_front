@@ -9,7 +9,7 @@ const PillComponent = ({ item }) => {
           backgroundColor: colors[item.color],
         }}
       ></div>
-      <p className="text-textSecondary font-semibold max-w-16 md:max-w-40 truncate whitespace-nowrap">
+      <p className="text-textSecondary font-semibold max-w-full xl:max-w-20 2xl:max-w-40 truncate whitespace-nowrap">
         {item.name}
       </p>
     </div>

@@ -26,7 +26,7 @@ const TaskItem = ({ task }) => {
           <p className="truncate" title={task.description}>
             {task.description}
           </p>
-          <div className="w-full flex gap-x-2">
+          <div className="w-full flex gap-x-2 xl:flex-row flex-col mt-2">
             <div
               className="text-textSecondary items-center truncate"
               title={task.date}
