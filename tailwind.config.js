@@ -8,14 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
+        background: "#FAFAFA",
         foreground: "var(--foreground)",
         neutral: "#111111", // Fondo principal oscuro
         neutralLight: "#F6F6F6", // Fondos de tarjetas y áreas secundarias
-        neutralLighter: "#F4F4F4", // Sidebar y secciones de apoyo
-        border: "#EAEAEA", // Bordes y líneas separadoras
-        muted: "#E5E7EB", // Elementos deshabilitados o secundarios
-        sideBar: "#D9D9D9", // Fondo de la barra lateral
+        neutralLighter: "#FAFAFA", // Sidebar y secciones de apoyo
+        border: "#EBEBEB", // Bordes y líneas separadoras
+        muted: "#7C7C7C", // Elementos deshabilitados o secundarios
+        sideBar: "#F4F4F4", // Fondo de la barra lateral
 
         textPrimary: "#FFFFFF", // Texto principal
         textSecondary: "#444444ff", // Texto secundario o deshabilitado

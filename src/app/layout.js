@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ProviderStore>
-      <html lang="en">
+      <html lang="es">
         <head>
           <link
             rel="stylesheet"
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
             crossOrigin="anonymous"
           />
         </head>
-        <body className="antialiased bg-gray-100 h-screen flex flex-col w-full">
+        <body className="antialiased bg-background h-screen flex flex-col w-full">
           <ToastContainer />
           {children}
         </body>
