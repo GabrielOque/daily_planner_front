@@ -24,12 +24,12 @@ const CustomInput = ({
         <>
           {showPassword ? (
             <i
-              className="far fa-eye text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
+              className="far fa-eye-slash text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
               onClick={() => setShowPassword(false)}
             />
           ) : (
             <i
-              className="far fa-eye-slash text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
+              className="far fa-eye text-textSecondary absolute text-xl md:text-2xl top-3 right-3 cursor-pointer"
               onClick={() => setShowPassword(true)}
             />
           )}
