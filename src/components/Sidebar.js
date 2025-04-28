@@ -1,145 +1,93 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { removeToken } from "@/utils/auth";
-import { logoutUser } from "@/store/features/user/userSlice";
-import ItemsSidebar from "@/components/ItemsSidebar";
+import SidebarContent from "@/components/SidebarContent";
 
-const sidebarSections = [
+const customLists = [
   {
-    title: "TAREAS",
-    items: [
-      { text: "Proximo", icon: "fa-chevron-double-right" },
-      { text: "Hoy", icon: "fa-tasks" },
-      { text: "Calendario", icon: "fa-calendar-alt" },
-      { text: "Notas", icon: "fa-sticky-note" },
-    ],
+    label: "Personales 2025 peoyecto de grados",
+    color: "blue",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f2",
   },
   {
-    title: "LISTAS",
-    items: [
-      { text: "Agregar Nueva Lista", icon: "fas fa-plus" },
-      { text: "Personal", list: "#FE7979" },
-      { text: "Trabajo", list: "#66D9E8" },
-      { text: "Lista 1", list: "#FFD43B" },
-      { text: "Lista 2", list: "#FFD43B" },
-      { text: "Lista 3", list: "#FFD43B" },
-      { text: "Lista 4", list: "#FFD43B" },
-      { text: "Lista 5", list: "#FFD43B" },
-      { text: "Lista 6", list: "#FFD43B" },
-      { text: "Lista 7", list: "#FFD43B" },
-      { text: "Lista 8", list: "#FFD43B" },
-    ],
+    label: "Universidad noveno°",
+    color: "yellow",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f3",
   },
   {
-    title: "ETIQUETAS",
-    items: [
-      { text: "Personal", color: "#FE7979" },
-      { text: "Trabajo", color: "#66D9E8" },
-      { text: "Lista 1", color: "#FFD43B" },
-      { text: "Equipo", color: "#FE7979" },
-      { text: "Yo", color: "#66D9E8" },
-      { text: "Ejemplo", color: "#FFD43B" },
-      { text: "Agregar Etiqueta", icon: "fas fa-plus", color: "#EBEBEB" },
-    ],
+    label: "Trabajo",
+    color: "purple",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f4",
+  },
+  {
+    label: "Lista 3",
+    color: "orange",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f5",
+  },
+  {
+    label: "Lista 4",
+    color: "pink",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f6",
+  },
+  {
+    label: "Lista 5",
+    color: "teal",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f7",
+  },
+  {
+    label: "Lista 6",
+    color: "red",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f8",
+  },
+  {
+    label: "Lista 7",
+    color: "purple",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f9",
+  },
+  {
+    label: "Lista 8",
+    color: "gray",
+    redirect: "/planner/tasks",
+    id: "68028acef0f1a7a90a7173f10",
   },
 ];
 
+const customTags = [
+  { label: "Personal", color: "blue" },
+  { label: "Trabajo", color: "red" },
+  { label: "Lista 1", color: "yellow" },
+  { label: "Equipo", color: "blue" },
+  { label: "Yo", color: "red" },
+  { label: "Ejemplo", color: "yellow" },
+  { label: "Personal", color: "blue" },
+  {
+    label: "Trabajo yo lo deseo hacer en casa sin i a la oficjna mañana",
+    color: "red",
+  },
+  { label: "Lista 1", color: "yellow" },
+  { label: "Equipo", color: "blue" },
+  { label: "Yo", color: "red" },
+  { label: "Ejemplo", color: "yellow" },
+];
+
 const Sidebar = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
   const [displaySidebar, setDisplaySidebar] = useState(false);
-  const [showAllLists, setShowAllLists] = useState(false);
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    removeToken();
-    router.push("/login");
-  };
-
-  const sidebarFooterItems = [
-    { text: "Configuración", icon: "fas fa-sliders-h" },
-    {
-      text: "Cerrar Sesión",
-      icon: "fas fa-sign-out-alt",
-      onClick: handleLogout,
-    },
-  ];
 
   return (
     <>
-      <div className="w-1/4 lg:w-1/5 2xl:w-1/6 md:block hidden overflow-hidden h-full rounded-2xl bg-sideBar p-4 relative">
+      <div className="w-1/4 lg:w-1/5 2xl:w-1/6 md:block hidden overflow-hidden h-full rounded-2xl bg-sideBar py-2 pl-4 pr-2 relative">
         <h1 className="lg:pl-2 pl-0 text-2xl font-bold text-textContrast cursor-pointer">
           Daily Planner
         </h1>
 
-        <div className="flex-col gap-4 mt-6 lg:pl-4 pl-0 overflow-y-auto overflow-x-hidden h-[calc(100%-120px)]">
-          {sidebarSections.map((section, index) => (
-            <div key={index} className="gap-2 flex flex-col">
-              <p className="font-bold text-textContrast text-base mt-3">
-                {section.title}
-              </p>
-              <div
-                className={`flex ${
-                  section.title === "ETIQUETAS"
-                    ? "flex-row flex-wrap"
-                    : "flex-col"
-                } gap-1 pl-2`}
-              >
-                {section.items
-                  .slice(
-                    0,
-                    section.title === "LISTAS" && !showAllLists
-                      ? 6
-                      : section.items.length
-                  )
-                  .map((item, idx) => (
-                    <ItemsSidebar
-                      key={idx}
-                      text={item.text}
-                      icon={item.icon}
-                      list={item.list}
-                      color={item.color}
-                      onClick={item.onClick}
-                    />
-                  ))}
-                {section.title === "LISTAS" && section.items.length > 6 && (
-                  <button
-                    className="flex items-center gap-4 whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg p-3"
-                    onClick={() => setShowAllLists(!showAllLists)}
-                  >
-                    {showAllLists ? (
-                      <div className="w-full flex items-center gap-5 flex-row">
-                        <i className="fas fa-chevron-up text-muted text-xl font-regular" />
-                        <p className="text-textContrast text-xl">
-                          Mostrar Menos
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="w-full flex items-center gap-5 flex-row">
-                        <i className="fas fa-chevron-down text-muted text-xl font-regular" />
-                        <p className="text-textContrast text-xl">Mostrar Más</p>
-                      </div>
-                    )}
-                  </button>
-                )}
-              </div>
-              <div className="w-full h-0.5 bg-border"></div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col bg-sideBar w-full mt-auto absolute bottom-0 left-0 pr-4">
-          <div className="flex flex-col gap-1 pl-6">
-            {sidebarFooterItems.map((item, idx) => (
-              <ItemsSidebar
-                key={idx}
-                text={item.text}
-                icon={item.icon}
-                onClick={item.onClick}
-              />
-            ))}
-          </div>
+        <div className="flex-col gap-4 mt-6 lg:pl-4 pl-0 pr-2 overflow-y-auto scroll-custom overflow-x-hidden h-[calc(100%-140px)]">
+          <SidebarContent customLists={customLists} customTags={customTags} />
         </div>
       </div>
 
@@ -162,7 +110,7 @@ const Sidebar = () => {
       </div>
       {displaySidebar && (
         <div
-          className="md:w-1/2 w-2/3 h-full fixed left-0 bg-sideBar z-50 p-4"
+          className="md:w-1/2 w-2/3 h-full fixed left-0 bg-sideBar z-50 px-4 py-2"
           style={{
             boxShadow: "4px 0px 8px rgba(0, 0, 0, 0.10)",
           }}
@@ -171,74 +119,12 @@ const Sidebar = () => {
             <h1 className="font-bold text-2xl pl-2 text-textContrast">
               Daily planner
             </h1>
-            <div className="flex-col gap-4 mt-6 overflow-y-auto overflow-x-hidden h-[calc(100%-120px)]">
-              {sidebarSections.map((section, index) => (
-                <div key={index} className="gap-2 flex flex-col">
-                  <p className="font-bold text-textContrast text-base mt-3">
-                    {section.title}
-                  </p>
-                  <div
-                    className={`flex ${
-                      section.title === "ETIQUETAS"
-                        ? "flex-row flex-wrap"
-                        : "flex-col"
-                    } gap-1 pl-2`}
-                  >
-                    {section.items
-                      .slice(
-                        0,
-                        section.title === "LISTAS" && !showAllLists
-                          ? 6
-                          : section.items.length
-                      )
-                      .map((item, idx) => (
-                        <ItemsSidebar
-                          key={idx}
-                          text={item.text}
-                          icon={item.icon}
-                          list={item.list}
-                          color={item.color}
-                          onClick={item.onClick}
-                        />
-                      ))}
-                    {section.title === "LISTAS" && section.items.length > 6 && (
-                      <button
-                        className="flex items-center gap-4 whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg p-3"
-                        onClick={() => setShowAllLists(!showAllLists)}
-                      >
-                        {showAllLists ? (
-                          <div className="w-full flex items-center gap-5 flex-row">
-                            <i className="fas fa-chevron-up text-muted text-xl font-regular" />
-                            <p className="text-textContrast text-xl">
-                              Mostrar Menos
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="w-full flex items-center gap-5 flex-row">
-                            <i className="fas fa-chevron-down text-muted text-xl font-regular" />
-                            <p className="text-textContrast text-xl">
-                              Mostrar Más
-                            </p>
-                          </div>
-                        )}
-                      </button>
-                    )}
-                  </div>
-                  <div className="w-full h-0.5 bg-border"></div>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col bg-sideBar w-full mt-auto absolute bottom-0 left-0 pr-4">
-              <div className="flex flex-col gap-1 pl-3">
-                {sidebarFooterItems.map((item, idx) => (
-                  <ItemsSidebar
-                    key={idx}
-                    text={item.text}
-                    icon={item.icon}
-                    onClick={item.onClick}
-                  />
-                ))}
-              </div>
+            <div className="flex-col mt-6 overflow-y-auto overflow-x-hidden h-[calc(100%-140px)]">
+              <SidebarContent
+                customLists={customLists}
+                customTags={customTags}
+                onClose={() => setDisplaySidebar(false)}
+              />
             </div>
           </div>
         </div>
