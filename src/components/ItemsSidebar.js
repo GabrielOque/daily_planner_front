@@ -1,31 +1,44 @@
-const ItemsSidebar = ({ text, icon, list, color, onClick }) => {
-  const handleClick = () => {
-    if (onClick) {
-      onClick();
-    } else {
-      console.log(`Se presionó: ${text}`);
-    }
-  };
+import { colors } from "@/utils/colors";
 
+const ItemsSidebar = ({
+  label,
+  icon,
+  isList = false,
+  isTag = false,
+  color,
+  onClick,
+  isSelected = false,
+}) => {
   return (
     <div
-      className={
-        color
-          ? "flex items-center whitespace-nowrap font-regular cursor-pointer rounded-lg p-1 gap-1 hover:saturate-50"
-          : "flex items-center gap-3 whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg p-3"
-      }
-      style={{ backgroundColor: color }}
-      onClick={handleClick}
+      className={`whitespace-nowrap font-regular truncate items-center flex cursor-pointer rounded-lg my-0.5 px-2 ${
+        isTag
+          ? "hover:saturate-50 py-0.5"
+          : "hover:bg-border hover:font-bold py-1.5"
+      } ${isSelected && "bg-border font-bold"} ${isList ? "gap-3" : "gap-1"}`}
+      style={{
+        backgroundColor: isTag && colors[color],
+      }}
+      onClick={onClick}
     >
-      {list ? (
-        <div
-          className="w-6 h-6 rounded-sm"
-          style={{ backgroundColor: list }}
-        ></div>
+      {isList ? (
+        <>
+          {isSelected ? (
+            <i
+              className="fas fa-folder-open text-xl rounded-sm"
+              style={{ color: colors[color] }}
+            />
+          ) : (
+            <i
+              className={`fas fa-folder text-xl rounded-sm`}
+              style={{ color: colors[color] }}
+            />
+          )}
+        </>
       ) : (
-        <i className={`fas ${icon} text-muted text-xl font-regular`} />
+        <i className={`fas ${icon} text-muted text-md font-regular pr-1`} />
       )}
-      <p className="text-textContrast text-xl">{text}</p>
+      <p className="text-textContrast text-md truncate">{label}</p>
     </div>
   );
 };
