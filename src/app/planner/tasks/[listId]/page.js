@@ -1,9 +1,9 @@
 "use client";
 import { useParams } from "next/navigation";
 
-const page = () => {
+const Tasks = () => {
   const { listId } = useParams();
   return <div>Task by list {listId}</div>;
 };
 
-export default page;
+export default Tasks;
