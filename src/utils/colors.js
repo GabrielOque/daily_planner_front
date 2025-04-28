@@ -7,4 +7,5 @@ export const colors = {
   orange: "#f97316", // Tailwind orange-500
   pink: "#ec4899", // Tailwind pink-500
   teal: "#14b8a6", // Tailwind teal-500
+  gray: "#6b7280", // Tailwind gray-500
 };
