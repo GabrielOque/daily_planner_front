@@ -20,7 +20,7 @@ const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
   };
 
   const handleSettings = () => {
-    console.log("Se presionó: Configuración");
+    router.push("/planner/settings");
   };
 
   const staticSidebarItems = [
