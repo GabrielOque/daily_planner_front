@@ -83,7 +83,7 @@ const SidebarContent = ({
       <div>
         <div>
           <p className="font-bold text-textContrast text-base mt-3">LISTAS</p>
-          <div className="whitespace-nowrap font-regular truncate items-center flex cursor-pointer rounded-lg px-2 gap-3   hover:bg-border hover:font-bold  py-1.5">
+          <div className="whitespace-nowrap font-regular truncate items-center flex cursor-pointer rounded-lg px-2 gap-3 hover:bg-border hover:font-bold  py-1.5">
             <i className={`fas fa-plus text-muted text-md font-regular`} />
             <button
               className="text-textContrast text-md truncate"

@@ -45,7 +45,7 @@ const tagSlice = createSlice({
         state.success = null;
       })
       .addCase(createTag.fulfilled, (state, action) => {
-        state.isLoading = true;
+        state.isLoading = false;
         state.tags.unshift({
           id: action.payload._id,
           label: action.payload.label,

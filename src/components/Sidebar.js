@@ -35,7 +35,7 @@ const Sidebar = () => {
           </button>
         </div>
 
-        <div className="flex-col gap-4 mt-6 lg:pl-4 pl-0 pr-2 overflow-y-auto scroll-custom overflow-x-hidden h-[calc(100%-140px)]">
+        <div className="flex-col gap-4 mt-6 lg:pl-4 pl-0 pr-2 overflow-y-auto scroll-custom overflow-x-hidden h-[calc(100%-150px)]">
           <SidebarContent
             customLists={lists}
             loadingLists={isLoading}
@@ -83,7 +83,7 @@ const Sidebar = () => {
                 {user.name}
               </button>
             </div>
-            <div className="flex-col mt-6 overflow-y-auto overflow-x-hidden h-[calc(100%-140px)]">
+            <div className="flex-col mt-6 overflow-y-auto overflow-x-hidden h-[calc(100%-150px)]">
               <SidebarContent
                 customLists={lists}
                 loadingLists={isLoading}
