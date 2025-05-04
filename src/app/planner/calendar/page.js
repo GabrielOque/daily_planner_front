@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -41,7 +40,6 @@ import { useSelector } from "react-redux";
 // ];
 
 const Calendar = () => {
-  const router = useRouter();
   const calendarRef = useRef(null);
   const [showPiker, setShowPicker] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);

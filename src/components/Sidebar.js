@@ -1,93 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import SidebarContent from "@/components/SidebarContent";
-
-const customLists = [
-  {
-    label: "Personales 2025 peoyecto de grados",
-    color: "blue",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f2",
-  },
-  {
-    label: "Universidad noveno°",
-    color: "yellow",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f3",
-  },
-  {
-    label: "Trabajo",
-    color: "purple",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f4",
-  },
-  {
-    label: "Lista 3",
-    color: "orange",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f5",
-  },
-  {
-    label: "Lista 4",
-    color: "pink",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f6",
-  },
-  {
-    label: "Lista 5",
-    color: "teal",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f7",
-  },
-  {
-    label: "Lista 6",
-    color: "red",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f8",
-  },
-  {
-    label: "Lista 7",
-    color: "purple",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f9",
-  },
-  {
-    label: "Lista 8",
-    color: "gray",
-    redirect: "/planner/tasks",
-    id: "68028acef0f1a7a90a7173f10",
-  },
-];
-
-const customTags = [
-  { label: "Personal", color: "blue" },
-  { label: "Trabajo", color: "red" },
-  { label: "Lista 1", color: "yellow" },
-  { label: "Equipo", color: "blue" },
-  { label: "Yo", color: "red" },
-  { label: "Ejemplo", color: "yellow" },
-  { label: "Personal", color: "blue" },
-  {
-    label: "Trabajo yo lo deseo hacer en casa sin i a la oficjna mañana",
-    color: "red",
-  },
-  { label: "Lista 1", color: "yellow" },
-  { label: "Equipo", color: "blue" },
-  { label: "Yo", color: "red" },
-  { label: "Ejemplo", color: "yellow" },
-];
+import { getTags } from "@/store/features/tag/tagThunks";
+import { getLists } from "@/store/features/list/listThunks";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [displaySidebar, setDisplaySidebar] = useState(false);
+  const { lists, isLoading } = useSelector((state) => state.lists);
+  const { tags, isLoading: loadingTags } = useSelector((state) => state.tags);
+  const { user } = useSelector((state) => state.userAuth);
+
+  useEffect(() => {
+    dispatch(getLists());
+    dispatch(getTags());
+  }, []);
 
   return (
     <>
       <div className="w-1/4 lg:w-1/5 2xl:w-1/6 md:block hidden overflow-hidden h-full rounded-2xl bg-sideBar py-2 pl-4 pr-2 relative">
-        <h1 className="lg:pl-2 pl-0 text-2xl font-bold text-textContrast cursor-pointer">
-          Daily Planner
-        </h1>
+        <div className="lg:pl-2 pl-0 text-2xl font-bold text-textContrast cursor-pointer flex items-center">
+          <img
+            src={user?.image?.secure_url || "/defaultprofile.svg"}
+            alt="logo"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <button
+            className="text-textContrast font-bold text-2xl pl-2 truncate"
+            onClick={() => router.push("/planner")}
+          >
+            {user.name}
+          </button>
+        </div>
 
         <div className="flex-col gap-4 mt-6 lg:pl-4 pl-0 pr-2 overflow-y-auto scroll-custom overflow-x-hidden h-[calc(100%-140px)]">
-          <SidebarContent customLists={customLists} customTags={customTags} />
+          <SidebarContent
+            customLists={lists}
+            loadingLists={isLoading}
+            loadingTags={loadingTags}
+            customTags={tags}
+          />
         </div>
       </div>
 
@@ -116,13 +70,25 @@ const Sidebar = () => {
           }}
         >
           <div className="w-full h-full relative">
-            <h1 className="font-bold text-2xl pl-2 text-textContrast">
-              Daily planner
-            </h1>
+            <div className="font-bold text-2xl pl-2 text-textContrast flex items-center">
+              <img
+                src={user?.image?.secure_url || "/defaultprofile.svg"}
+                alt="logo"
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <button
+                className="text-textContrast font-bold text-2xl pl-2 truncate"
+                onClick={() => router.push("/planner")}
+              >
+                {user.name}
+              </button>
+            </div>
             <div className="flex-col mt-6 overflow-y-auto overflow-x-hidden h-[calc(100%-140px)]">
               <SidebarContent
-                customLists={customLists}
-                customTags={customTags}
+                customLists={lists}
+                loadingLists={isLoading}
+                loadingTags={loadingTags}
+                customTags={tags}
                 onClose={() => setDisplaySidebar(false)}
               />
             </div>

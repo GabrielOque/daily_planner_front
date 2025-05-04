@@ -5,6 +5,7 @@ const CustomInput = ({
   onChange,
   value,
   placeholder,
+  border = "border-neutralLighter",
   height = "h-12",
   password = false,
 }) => {
@@ -18,7 +19,7 @@ const CustomInput = ({
         onChange={onChange}
         disabled={loading}
         placeholder={placeholder}
-        className={`w-full border-2 border-neutralLighter rounded-xl px-3 text-md md:text-lg focus:outline-none focus:ring-0 ${height}`}
+        className={`w-full border-2 ${border}  rounded-xl px-3 text-md md:text-lg focus:outline-none focus:ring-0 ${height}`}
       />
       {password && (
         <>

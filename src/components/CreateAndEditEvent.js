@@ -176,7 +176,7 @@ const CreateAndEditEvent = ({
                     disabled={loadingCreateEvent}
                     paddingY="py-1"
                     paddingX={"px-2"}
-                    background="bg-primary"
+                    background="bg-red-500 text-white"
                     fontSize="text-sm"
                     textColor="text-textContrast"
                     onClick={() => setShowDeleteModal(true)}

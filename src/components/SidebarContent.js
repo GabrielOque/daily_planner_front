@@ -2,16 +2,26 @@ import { useState } from "react";
 import ItemsSidebar from "@/components/ItemsSidebar";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { removeToken } from "@/utils/auth";
 import { logoutUser } from "@/store/features/user/userSlice";
+import CreateListModal from "@/components/CreateListModal";
+import CreateTagModal from "@/components/CreateTagModal";
+import { useDispatch } from "react-redux";
 
-const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
+const SidebarContent = ({
+  customLists,
+  loadingLists,
+  loadingTags,
+  customTags,
+  onClose = () => {},
+}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const [showAllLists, setShowAllLists] = useState(false);
   const [showAllTags, setShowAllTags] = useState(false);
+  const [isOpenCreateListModal, setIsOpenCreateListModal] = useState(false);
+  const [isOpenCreateTagModal, setIsOpenCreateTagModal] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -29,7 +39,7 @@ const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
       icon: "fa-chevron-double-right",
       redirect: "/planner/upcoming",
     },
-    { label: "Hoy", icon: "fa-tasks", redirect: "/planner/today" },
+    { label: "Tareas", icon: "fa-tasks", redirect: "/planner/all-tasks" },
     {
       label: "Calendario",
       icon: "fa-calendar-alt",
@@ -75,45 +85,60 @@ const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
           <p className="font-bold text-textContrast text-base mt-3">LISTAS</p>
           <div className="whitespace-nowrap font-regular truncate items-center flex cursor-pointer rounded-lg px-2 gap-3   hover:bg-border hover:font-bold  py-1.5">
             <i className={`fas fa-plus text-muted text-md font-regular`} />
-            <p className="text-textContrast text-md truncate">Nueva Lista</p>
+            <button
+              className="text-textContrast text-md truncate"
+              onClick={() => setIsOpenCreateListModal(true)}
+            >
+              Nueva Lista
+            </button>
           </div>
         </div>
-        {customLists
-          .slice(0, showAllLists ? customLists.length : 4)
-          .map((item, idx) => (
-            <ItemsSidebar
-              key={idx}
-              label={item.label}
-              color={item.color}
-              isList
-              isSelected={
-                pathname.split("/").includes("tasks") &&
-                pathname.split("/")[3] === item.id
-              }
-              onClick={() => {
-                const redirectPath = item.redirect || "/planner/tasks";
-                const whitParam = `${redirectPath}/${item.id}`;
-                router.push(whitParam);
-                onClose();
-              }}
-            />
-          ))}
-        <button
-          className="flex items-center whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg py-1 px-2"
-          onClick={() => setShowAllLists(!showAllLists)}
-        >
-          {showAllLists ? (
-            <div className="w-full flex items-center gap-x-2 flex-row">
-              <i className="fas fa-chevron-up text-muted text-md font-regular" />
-              <p className="text-textContrast text-md">Mostrar menos</p>
-            </div>
-          ) : (
-            <div className="w-full flex items-center gap-x-2 flex-row">
-              <i className="fas fa-chevron-right text-muted text-md font-regular" />
-              <p className="text-textContrast text-md">Mostrar todos</p>
-            </div>
-          )}
-        </button>
+        {loadingLists ? (
+          <div className="flex flex-row gap-2 pl-2 items-center">
+            <i className="fas fa-spinner animate-spin text-muted text-md font-regular" />
+          </div>
+        ) : (
+          <>
+            {customLists
+              .slice(0, showAllLists ? customLists.length : 4)
+              .map((item, idx) => (
+                <ItemsSidebar
+                  key={idx}
+                  label={item.label}
+                  color={item.color}
+                  isList
+                  isSelected={
+                    pathname.split("/").includes("tasks-list") &&
+                    pathname.split("/")[3] === item.id
+                  }
+                  onClick={() => {
+                    const redirectPath = item.redirect || "/planner/tasks-list";
+                    const whitParam = `${redirectPath}/${item.id}`;
+                    router.push(whitParam);
+                    onClose();
+                  }}
+                />
+              ))}
+          </>
+        )}
+        {customLists.length > 4 && (
+          <button
+            className="flex items-center whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg py-1 px-2"
+            onClick={() => setShowAllLists(!showAllLists)}
+          >
+            {showAllLists ? (
+              <div className="w-full flex items-center gap-x-2 flex-row">
+                <i className="fas fa-chevron-up text-muted text-md font-regular" />
+                <p className="text-textContrast text-md">Mostrar menos</p>
+              </div>
+            ) : (
+              <div className="w-full flex items-center gap-x-2 flex-row">
+                <i className="fas fa-chevron-right text-muted text-md font-regular" />
+                <p className="text-textContrast text-md">Mostrar todos</p>
+              </div>
+            )}
+          </button>
+        )}
       </div>
       <div>
         <div>
@@ -122,41 +147,60 @@ const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
           </p>
           <div className="whitespace-nowrap font-regular truncate items-center flex cursor-pointer rounded-lg px-2 mb-2 gap-3 hover:bg-border hover:font-bold  py-1.5">
             <i className={`fas fa-plus text-muted text-md font-regular`} />
-            <p className="text-textContrast text-md truncate">Nueva Etiqueta</p>
+            <button
+              className="text-textContrast text-md truncate"
+              onClick={() => setIsOpenCreateTagModal(true)}
+            >
+              Nueva Etiqueta
+            </button>
           </div>
         </div>
         <div className="flex flex-row flex-wrap gap-1 pl-2">
-          {customTags
-            .slice(0, showAllTags ? customTags.length : 4)
-            .map((item, idx) => (
-              <ItemsSidebar
-                key={idx}
-                label={item.label}
-                color={item.color}
-                isTag
-                onClick={() => {
-                  console.log(`Se presionó etiqueta: ${item.label}`);
-                  onClose();
-                }}
-              />
-            ))}
-        </div>
-        <button
-          className="flex items-center whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg py-1 px-2 mt-1"
-          onClick={() => setShowAllTags(!showAllTags)}
-        >
-          {showAllTags ? (
-            <div className="w-full flex items-center gap-x-2 flex-row">
-              <i className="fas fa-chevron-up text-muted text-md font-regular" />
-              <p className="text-textContrast text-md">Mostrar menos</p>
+          {loadingTags ? (
+            <div className="flex flex-row gap-2 pl-2 items-center">
+              <i className="fas fa-spinner animate-spin text-muted text-md font-regular" />
             </div>
           ) : (
-            <div className="w-full flex items-center gap-x-2 flex-row">
-              <i className="fas fa-chevron-right text-muted text-md font-regular" />
-              <p className="text-textContrast text-md">Mostrar todos</p>
-            </div>
+            customTags
+              .slice(0, showAllTags ? customTags.length : 4)
+              .map((item, idx) => (
+                <ItemsSidebar
+                  key={idx}
+                  label={item.label}
+                  color={item.color}
+                  isTag
+                  isSelected={
+                    pathname.split("/").includes("tasks-tag") &&
+                    pathname.split("/")[3] === item.id
+                  }
+                  onClick={() => {
+                    const redirectPath = item.redirect || "/planner/tasks-tag";
+                    const whitParam = `${redirectPath}/${item.id}`;
+                    router.push(whitParam);
+                    onClose();
+                  }}
+                />
+              ))
           )}
-        </button>
+        </div>
+        {customTags.length > 4 && (
+          <button
+            className="flex items-center whitespace-nowrap font-regular cursor-pointer hover:bg-border hover:font-bold rounded-lg py-1 px-2"
+            onClick={() => setShowAllTags(!showAllTags)}
+          >
+            {showAllTags ? (
+              <div className="w-full flex items-center gap-x-2 flex-row">
+                <i className="fas fa-chevron-up text-muted text-md font-regular" />
+                <p className="text-textContrast text-md">Mostrar menos</p>
+              </div>
+            ) : (
+              <div className="w-full flex items-center gap-x-2 flex-row">
+                <i className="fas fa-chevron-right text-muted text-md font-regular" />
+                <p className="text-textContrast text-md">Mostrar todos</p>
+              </div>
+            )}
+          </button>
+        )}
       </div>
       <div className="flex flex-col bg-sideBar w-full mt-auto absolute md:bottom-2 bottom-0 left-0 pr-4">
         <div className="flex flex-col gap-1 pl-6">
@@ -173,8 +217,31 @@ const SidebarContent = ({ customLists, customTags, onClose = () => {} }) => {
           ))}
         </div>
       </div>
+      {/* Modal for creating a new list */}
+      {isOpenCreateListModal && (
+        <CreateListModal onClose={() => setIsOpenCreateListModal(false)} />
+      )}
+      {/* Modal for creating a new tag */}
+      {isOpenCreateTagModal && (
+        <CreateTagModal onClose={() => setIsOpenCreateTagModal(false)} />
+      )}
     </>
   );
 };
 
 export default SidebarContent;
+
+// {customTags
+//   .slice(0, showAllTags ? customTags.length : 4)
+//   .map((item, idx) => (
+//     <ItemsSidebar
+//       key={idx}
+//       label={item.label}
+//       color={item.color}
+//       isTag
+//       onClick={() => {
+//         console.log(`Se presionó etiqueta: ${item.label}`);
+//         onClose();
+//       }}
+//     />
+//   ))}

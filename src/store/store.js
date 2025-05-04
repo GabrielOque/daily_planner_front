@@ -2,10 +2,14 @@
 
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import userSlice from "@/store/features/user/userSlice";
+import listSlice from "@/store/features/list/listSlice";
+import tagSlice from "@/store/features/tag/tagSlice";
 
 const store = configureStore({
   reducer: {
     userAuth: userSlice,
+    lists: listSlice,
+    tags: tagSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
