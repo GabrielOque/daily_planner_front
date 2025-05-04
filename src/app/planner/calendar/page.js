@@ -170,11 +170,31 @@ const Calendar = () => {
             weekends={true}
             locale={esLocale}
             events={events}
-            height="100%"
+            height={isLargeScreen ? "100%" : "95%"}
+            eventColor="#378006"
             eventClick={handleEventClick}
             dateClick={(info) => {
               setPreSelectDate(info.dateStr.split("T")[0]);
               setCreateNewEvent(true);
+            }}
+            eventDidMount={(info) => {
+              const eventDate = new Date(info.event.startStr);
+              const now = new Date();
+
+              if (eventDate < now) {
+                info.el.style.backgroundColor = "#378006";
+                info.el.style.opacity = "0.5";
+                const line = document.createElement("div");
+                line.style.position = "absolute";
+                line.style.top = "50%";
+                line.style.left = "0";
+                line.style.width = "100%";
+                line.style.height = "2px";
+                line.style.backgroundColor = "#000";
+                line.style.pointerEvents = "none";
+                info.el.style.position = "relative";
+                info.el.appendChild(line);
+              }
             }}
           />
           {selectedEvent && (

@@ -14,7 +14,7 @@ const Home = () => {
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
         <source
-          src="https://res.cloudinary.com/dlyvpslli/video/upload/v1746334682/jjlpz8z8wforbnoxbsvc.mp4"
+          src="https://res.cloudinary.com/dlyvpslli/video/upload/v1746367552/bxncvyyagkkls2ckh9at.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
