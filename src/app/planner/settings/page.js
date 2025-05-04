@@ -50,11 +50,11 @@ const Page = () => {
 
   const validateForm = () => {
     if (!name) {
-      alert("Por favor, ingresa tu nombre.");
+      toast.error("Por favor, ingresa tu nombre.");
       return false;
     }
     if (password && password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
+      toast.error("Las contraseñas no coinciden.");
       return false;
     }
     return true;
@@ -63,6 +63,7 @@ const Page = () => {
   const hasChanged = () => {
     if (user.name !== name) return true;
     if (file) return true;
+    if (password) return true;
     return false;
   };
 
@@ -80,6 +81,9 @@ const Page = () => {
     try {
       const response = await axios.put("/user/update-user", formData);
       if (response.status === 200) {
+        setFile(null);
+        setPassword("");
+        setConfirmPassword("");
         setToken(response.data.token);
         dispatch(setUserAuth(response.data));
         toast.success("Perfil actualizado correctamente.");
@@ -92,7 +96,6 @@ const Page = () => {
   };
 
   useEffect(() => {
-    console.log("user", user);
     setName(user.name);
     setFile(null);
     setImageSrc(user?.image?.secure_url || "/defaultprofile.svg");
