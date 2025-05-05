@@ -8,10 +8,11 @@ const Button = ({
   loading = false,
   children,
   disabled = false,
+  textColor = "text-textContrast",
 }) => {
   return (
     <button
-      className={`rounded-lg font-semibold w-full ${border} ${paddingX} ${paddingY} ${background} ${fontSize} ${
+      className={`rounded-lg ${textColor} font-semibold w-full ${border} ${paddingX} ${paddingY} ${background} ${fontSize} ${
         loading || disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"
       }`}
       onClick={() => {

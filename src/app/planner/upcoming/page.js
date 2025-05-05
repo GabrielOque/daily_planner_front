@@ -101,7 +101,7 @@ const Upcoming = () => {
       <div className="w-full">
         <div className="w-full flex items-center mb-4">
           <h1 className="text-2xl md:text-4xl font-bold text-neutral">
-            Upcoming
+            Próximas
           </h1>
           <div className="border border-sideBar rounded-lg h-10 md:h-12 flex items-center justify-center ml-2 md:ml-4 md:px-4 px-2 text-xl font-bold">
             {[...todayTasks, ...tomorrowTasks, ...weekTasks].length}

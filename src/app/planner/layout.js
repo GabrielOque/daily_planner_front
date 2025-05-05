@@ -1,10 +1,12 @@
 "use client";
 import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
 import FloatingMeeting from "@/components/FloatingMeeting";
 
 export default function Planner({ children }) {
+  const pathname = usePathname();
   const { isMeeting } = useSelector((state) => state.userAuth);
 
   return (
@@ -20,6 +22,8 @@ export default function Planner({ children }) {
             className={` h-full  scrollbar-hidden overflow-y-scroll ${
               isMeeting
                 ? "w-full p-0"
+                : pathname === "/planner"
+                ? "p-0 w-full md:w-3/4 2xl:w-4/5 md:border md:border-sideBar md:rounded-2xl"
                 : "p-2 md:p-4 w-full md:w-3/4 2xl:w-4/5 md:border md:border-sideBar md:rounded-2xl"
             }`}
           >
