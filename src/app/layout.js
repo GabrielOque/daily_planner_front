@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import ProviderStore from "@/components/ProviderStore";
 
@@ -17,10 +18,15 @@ export default function RootLayout({ children }) {
             href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
             crossOrigin="anonymous"
           /> */}
-          <script
+          {/* <script
             src="https://kit.fontawesome.com/48de85dc46.js"
             crossOrigin="anonymous"
-          ></script>
+          ></script> */}
+          <Script
+            src="https://kit.fontawesome.com/48de85dc46.js"
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
         </head>
         <body className="antialiased bg-background h-screen flex flex-col w-full">
           <ToastContainer />
