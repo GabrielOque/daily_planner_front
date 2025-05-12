@@ -36,7 +36,7 @@ const SidebarContent = ({
   const staticSidebarItems = [
     {
       label: "Proximo",
-      icon: "fa-chevron-double-right",
+      icon: "fas fa-angle-double-right",
       redirect: "/planner/upcoming",
     },
     { label: "Tareas", icon: "fa-tasks", redirect: "/planner/all-tasks" },
